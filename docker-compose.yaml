@@ -1,0 +1,32 @@
+version: "3.8"
+services: 
+    dapp-front:
+        container_name: dapp-front
+        image: node:slim
+        working_dir: "/app"
+        command: "npm start"
+        volumes:
+        - ./front:/app
+        ports: 
+        - "${PORT_FRONT}:3000"
+    dapp-back:
+        container_name: dapp-back
+        restart: always
+        image: node:slim
+        working_dir: "/app"
+        command: "npm run dev"
+        ports: 
+        - "${PORT_BACK}:4000"
+        volumes:
+        - ./back:/app
+        depends_on:
+        - dapp-mongo
+    dapp-mongo:
+        container_name: dapp-mongo
+        image: mongo
+        ports:
+        - 27017:27017
+        volumes:
+        - mongodb:/data/db
+volumes:
+    mongodb:
