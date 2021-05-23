@@ -21,7 +21,7 @@ app.use(express.json())
 
 buildRoutes(app)
 
-const port = 4003;
+const port = 4000;
 app.listen(port, '0.0.0.0', function() {
     console.log(`Listening on ${port}...`);
 });
