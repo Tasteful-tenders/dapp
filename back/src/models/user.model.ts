@@ -3,19 +3,15 @@ const bcrypt = require('bcrypt');
 
 export interface IUser extends Document {
     _id: string,
-    email: string,
-    password: string,
-    username: string,
-    tokens: [string],
+    pseudo: string,
+    bio: string,
     useful_links: Array<string>
 }
 
 const userSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    username: { type : String, required: true },
-    tokens: [String],
+    pseudo: { type: String, required: true, unique: true },
+    bio: { type: String },
     useful_links:  [
         { type : String }
     ]
@@ -23,16 +19,12 @@ const userSchema = new Schema({
 
 userSchema.pre<IUser>('save', async function(next: any) {
 
-    if (this.isModified('email')) {
-        const emailExists: boolean = await User.exists({ email: this.email })
-        if (emailExists) return next(new Error('Email already exists !'))
+    if (this.isModified('pseudo')) {
+        const pseudoExists: boolean = await User.exists({ pseudo: this.pseudo })
+        if (pseudoExists) return next(new Error('Pseudo already exists !'))
     }
 
-    if (!this.isModified("password")) return next()
-
     try {
-        const salt = await bcrypt.genSalt(10)
-        this.password = await bcrypt.hash(this.password, salt)
         return next()
     } catch (error) {
         return next(error)
