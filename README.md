@@ -27,6 +27,7 @@ We decide to store all nft on IPFS and deploy our website with fleek
 Front:
 
 - React
+- Tailwind
 
 Back:
 
