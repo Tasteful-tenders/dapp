@@ -9,7 +9,7 @@ import profile_icon from '../img/profile_icon.png';
 class Header extends Component {
     render() {
         return(
-            <nav className="flex items-center justify-between flex-wrap w-full px-32 py-5 font-all">
+            <nav className="flex items-center justify-between flex-wrap w-full px-32 py-5 pb-12 font-all h-header">
                 <div className="flex items-center flex-shrink-0 text-white mr-6">
                     <a href="">
                         <img src={logo} alt="logo" className=""/>
