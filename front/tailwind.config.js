@@ -5,8 +5,14 @@ module.exports = {
     extend: {},
     height: {
       xl: '55px',
-      footer: '50px',
+      footer: '5%',
+      header: '15%',
+      body: '80%',
+      screen: '100vh',
       caroussel: '400px',
+      middle: '50%',
+      full: '100%',
+      big_nft: '710px',
     },
     width: {
       button: '250px',
@@ -14,14 +20,16 @@ module.exports = {
       full: '100%',
       profile: '55px',
       icon: '20px',
+      big_nft: '515px',
     },
     fontSize: {
       xs: '10px',
       small: '15px',
       medium: '20px',
       large: '25px',
+      title: '30px',
       big: '40px',
-      xl: '70px',
+      xl: '50px',
     },
     borderRadius: {
     }, 
