@@ -19,3 +19,7 @@ code {
 .border-rounded {
   border-radius: 100px;
 }
+
+.border-nft-card {
+  border-radius: 20px;
+}
