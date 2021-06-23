@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Header, Footer} from './components';
-import {Web3ReactProvider} from "@web3-react/core";
+import {useWeb3React, Web3ReactProvider} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
 import ConnectModal from "./components/ConnectModal";
+import {ContractHelper} from "./contractHelper";
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
