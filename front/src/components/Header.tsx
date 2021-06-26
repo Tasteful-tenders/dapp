@@ -56,11 +56,11 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
     if (active) {
         return (
             <>
-                <Link className={'bg-black text-white px-9 focus:outline-none border-rounded font-medium text-medium'} href={'/test'}>
-                    test
+                <Link className={'px-9 font-medium text-medium'} href={'/bids'}>
+                    BIDS
                 </Link>
-                <Link className={'bg-black text-white px-9 focus:outline-none border-rounded font-medium text-medium'} href={'/test2'}>
-                    test2
+                <Link className={'px-9 font-medium text-medium'} href={'/list'}>
+                    MINT
                 </Link>
             </>
         );
