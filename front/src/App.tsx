@@ -3,6 +3,7 @@ import {Header, Footer} from './components';
 import {Web3ReactProvider} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
 import ConnectModal from "./components/ConnectModal";
+import NftHomepage from "./components/NftHomepage";
 import Route from "./components/Route";
 
 function getLibrary(provider: any) {
