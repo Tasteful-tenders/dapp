@@ -47,11 +47,14 @@ export class ContractHelper {
         this.auction = auction;
     }
 
-    public async fetchAllTenders(): Promise<ITender[]> {
+    public async fetchAllNftIds(): Promise<any[]> {
         const events: any[] = await this.auction.queryFilter(this.auction.filters.logAddNFT());
-        const tenderIds = events.map((log: any) => {
+        return events.map((log: any) => {
             return log.args._nftId;
         });
+    }
+
+    public async fetchAllTenders(tenderIds: any[]): Promise<ITender[]> {
         return await Promise.all(tenderIds.map(async (id) => {
             const tender = await this.auction.tenders(id);
             return {
@@ -65,9 +68,15 @@ export class ContractHelper {
         }));
     }
 
+    public async fetchAllNftData(tenderIds: any[]): Promise<INFTData[]> {
+        return await Promise.all(tenderIds.map(async (id) => {
+            return await this.getTokenURI(id);
+        }));
+    }
+
     public async getTokenURI(nftId: number): Promise<INFTData> {
-        const tokenURI = await this.nftFactory.tokenURI(nftId);
-        return JSON.parse(tokenURI);
+        const tokenURI: string = await this.nftFactory.tokenURI(nftId);
+        return JSON.parse(tokenURI.slice(1, tokenURI.length-1));
     }
 
 }
