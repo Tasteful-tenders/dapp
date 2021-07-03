@@ -1,13 +1,18 @@
 import {Contract} from "ethers";
 import {AUCTION_ABI, AUCTION_ADDR, NFT_FACTORY_ABI, NFT_FACTORY_ADDR, TTK_ABI, TTK_ADDR} from "./constants";
 
-interface ITender {
+export interface ITender {
     owner: string;
     startPrice: number;
     endDate: number;
     highestBidder: string;
     highestBid: number;
     active: boolean;
+}
+
+export interface INFTData {
+    title: string;
+    ipfsHash: string;
 }
 
 export class ContractHelper {
@@ -58,6 +63,11 @@ export class ContractHelper {
                 active: tender.active
             }
         }));
+    }
+
+    public async getTokenURI(nftId: number): Promise<INFTData> {
+        const tokenURI = await this.nftFactory.tokenURI(nftId);
+        return JSON.parse(tokenURI);
     }
 
 }
