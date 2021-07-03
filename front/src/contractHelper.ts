@@ -42,20 +42,22 @@ export class ContractHelper {
         this.auction = auction;
     }
 
-    /**
     public async fetchAllAuctions(): Promise<ITender[]> {
-        const tenders: any[] = await this.auction.queryFilter(this.auction.filters.logAddNFT());
-        return tenders.map((log: any) => {
-            return {
-                    owner: '',
-                    startPrice: 0,
-                    endDate: 0,
-                    highestBidder: '',
-                    highestBid: 0,
-                    active: true
-                };
+        const events: any[] = await this.auction.queryFilter(this.auction.filters.logAddNFT());
+        const tenderIds = events.map((log: any) => {
+            return log.args._nftId;
         });
+        return await Promise.all(tenderIds.map(async (id) => {
+            const tender = await this.auction.tenders(id);
+            return {
+                owner: tender.owner,
+                startPrice: tender.startPrice,
+                endDate: tender.endDate,
+                highestBidder: tender.highestBidder,
+                highestBid: tender.highestBid,
+                active: tender.active
+            }
+        }));
     }
-     **/
 
 }
