@@ -1,12 +1,12 @@
-import {Contract} from "ethers";
+import {BigNumber, Contract} from "ethers";
 import {AUCTION_ABI, AUCTION_ADDR, NFT_FACTORY_ABI, NFT_FACTORY_ADDR, TTK_ABI, TTK_ADDR} from "./constants";
 
 export interface ITender {
     owner: string;
-    startPrice: number;
+    startPrice: BigNumber;
     endDate: number;
     highestBidder: string;
-    highestBid: number;
+    highestBid: BigNumber;
     active: boolean;
 }
 
