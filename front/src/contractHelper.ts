@@ -47,7 +47,7 @@ export class ContractHelper {
         this.auction = auction;
     }
 
-    public async fetchAllAuctions(): Promise<ITender[]> {
+    public async fetchAllTenders(): Promise<ITender[]> {
         const events: any[] = await this.auction.queryFilter(this.auction.filters.logAddNFT());
         const tenderIds = events.map((log: any) => {
             return log.args._nftId;
