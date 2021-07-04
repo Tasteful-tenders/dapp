@@ -13,6 +13,7 @@ export interface ITender {
 export interface INFTData {
     title: string;
     author: string;
+    description: string;
     ipfsHash: string;
 }
 
@@ -78,11 +79,11 @@ export class ContractHelper {
 
     public async fetchAllNftData(tenderIds: any[]): Promise<INFTData[]> {
         return await Promise.all(tenderIds.map(async (id) => {
-            return await this.getTokenURI(id);
+            return await this.getNftData(id);
         }));
     }
 
-    public async getTokenURI(nftId: number): Promise<INFTData> {
+    public async getNftData(nftId: BigNumber): Promise<INFTData> {
         const tokenURI: string = await this.nftFactory.tokenURI(nftId);
         return JSON.parse(tokenURI.slice(1, tokenURI.length-1));
     }
