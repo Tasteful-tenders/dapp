@@ -1,4 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState, Fragment} from 'react';
+import { Menu, Transition } from '@headlessui/react'
 
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -9,7 +10,7 @@ import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
 import {ContractHelper, INFTData, ITender} from "../contractHelper";
 import {providers} from "ethers";
-import Link from "./Link";
+import {Link} from "./";
 
 export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: Function }): JSX.Element {
     const context = useWeb3React<Web3Provider>();
@@ -47,7 +48,7 @@ export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: F
             </div>
             <div className="flex flex-shrink-0">
                 <NavBar setOpen={setOpen}/>
-                <img src={profile_icon} alt="profile_icon" className="h-xl pl-5"/>
+                <Dropdown/>
             </div>
         </nav>
     );
@@ -76,4 +77,30 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
             onClick={() => setOpen(true)}
         >{connectBtnLabel}
         </button>);
+}
+
+function Dropdown(): JSX.Element {
+
+    return (
+        <div className="font-all">
+            <Menu as="div" className="relative inline-block text-left">
+                <Menu.Button><img src={profile_icon} alt="profile_icon" className="h-xl pl-5 "/></Menu.Button> 
+                <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
+                    <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                            {({ active }) => (
+                                <a href="/account" className={`${ active ? 'text-light' : 'text-light' } group flex rounded-md items-center w-full px-2 py-2 font-large`}>Account</a>
+                            )}
+                        </Menu.Item>
+                        <Menu.Item>
+                        {({ active }) => (
+                                <a href="/account" className={`${ active ? 'text-light' : 'text-light' } group flex rounded-md items-center w-full px-2 py-2 font-large text-light`}>Claim</a>
+                            )}
+                        </Menu.Item>
+                    </Menu.Items>
+                </Transition>
+            </Menu>
+        </div>
+    );
+    
 }

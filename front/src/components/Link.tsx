@@ -1,6 +1,6 @@
 import React from "react";
 
-const Link = ({ className, href, children }: {className: string, href: string, children: any}) => {
+export const Link = ({ className, href, children }: {className: string, href: string, children: any}) => {
     const onClick = (event: any) => {
         event.preventDefault();
         window.history.pushState({}, "", href);
@@ -14,5 +14,3 @@ const Link = ({ className, href, children }: {className: string, href: string, c
         </a>
     );
 };
-
-export default Link;

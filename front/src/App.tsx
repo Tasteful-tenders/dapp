@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import {Header, Footer} from './components';
 import {Web3ReactProvider} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
-import ConnectModal from "./components/ConnectModal";
+
+import {Link, Route, NftAuction, NftHomepage, ConnectModal} from "./components";
+import {TastefulData, TastefulDataProvider} from "./context";
 import Route from "./components/Route";
 import Home from "./components/Home";
-import {TastefulData, TastefulDataProvider} from "./context";
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -31,7 +32,16 @@ function App(): JSX.Element {
                     <Route path={'/mint'}>
                         <h1>mint</h1>
                     </Route>
+                    <Route path={'/NftHomepage'}>
+                      <NftHomepage/>
+                    </Route>
+                    <Route path={'/NftAuction'}>
+                        <NftAuction/>
+                    </Route>
                     <ConnectModal open={open} setOpen={setOpen}/>
+                    <Link className={''} href={'/NftHomepage'}>
+                      LOREM
+                    </Link>
                     <Footer/>
                 </div>
             </TastefulDataProvider>

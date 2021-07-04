@@ -19,6 +19,7 @@ module.exports = {
       search_bar: '640px',
       full: '100%',
       profile: '55px',
+      middle: '50%',
       icon: '20px',
       big_nft: '515px',
     },
@@ -31,6 +32,9 @@ module.exports = {
       big: '40px',
       xl: '50px',
     },
+    borderColor: {
+      black: "#000000",
+    }, 
     colors: {
       black: "#000000",
       grey: '#808080',
