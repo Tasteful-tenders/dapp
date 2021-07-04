@@ -24,6 +24,16 @@ code {
   border-radius: 20px;
 }
 
+.border-bottom-nft-card {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.border-top-nft-card {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
 .border-button {
   border-radius: 10px;
 }

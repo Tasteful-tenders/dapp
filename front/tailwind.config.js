@@ -13,6 +13,8 @@ module.exports = {
       middle: '50%',
       full: '100%',
       big_nft: '710px',
+      top_card: '60px',
+      bottom_card: '90px',
     },
     width: {
       button: '250px',
@@ -22,9 +24,11 @@ module.exports = {
       middle: '50%',
       icon: '20px',
       big_nft: '515px',
+      nft_card: '250px',
     },
     fontSize: {
       xs: '10px',
+      card: '12px',
       small: '15px',
       medium: '20px',
       large: '25px',
