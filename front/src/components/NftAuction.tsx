@@ -14,7 +14,7 @@ export function NftAuction(): JSX.Element{
             </div>
             <div className="col-span-2 h-full grid-rows-3 grid">
 
-                <div className="grid grid-cols-2 flex items-start h-middle row-end-3 row-span-2">
+                <div className="grid grid-cols-2 flex items-start h-middle row-end-1 row-span-2">
                     <div className="col-start-1 justify-items-start grid">
                         <div className="text-big uppercase font-black">Praza do Toural</div>
                         <div className="text-medium font-light text-grey">by Saint Jacques de Compostelle</div>
@@ -26,15 +26,15 @@ export function NftAuction(): JSX.Element{
                     </div>
                 </div>
 
-                <div className="grid grid-rows-3">
-
+                <div className="grid grid-rows-3 row-span-3">
+                    {/* <div className="w-bid_card bg-light_blue h-bid_card border-button"></div> */}
                 </div>
 
-                <div className="grid grid-cols-2 flex items-end h-middle pb-6">
+                <div className="grid grid-cols-2 flex items-end h-middle row-end-5 pb-6">
                     <div className="col-start-1 justify-items-start grid col-span-4 w-full">
                         <div className="font-light">Wallet : 15000 TTK</div>
                         <div className="py-3 w-middle">
-                            <input type="text" className="font-light focus:outline-none text-gray-700 px-3 py-1 border-color-black w-full" placeholder="bid's amount"/>
+                            <input type="text" className="font-light focus:outline-none text-gray-700 px-3 py-1 border-color-black w-bid_card" placeholder="bid's amount"/>
                         </div>
                         <button className="bg-black text-white px-3 py-2 focus:outline-none font-light border-button">Add new bid</button> 
                     </div>

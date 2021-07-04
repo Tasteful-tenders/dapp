@@ -14,6 +14,7 @@ module.exports = {
       full: '100%',
       big_nft: '710px',
       top_card: '60px',
+      bid_card: '70px',
       bottom_card: '90px',
     },
     width: {
@@ -25,6 +26,7 @@ module.exports = {
       icon: '20px',
       big_nft: '515px',
       nft_card: '250px',
+      bid_card: '490px',
     },
     fontSize: {
       xs: '10px',

@@ -1,24 +1,34 @@
-import React, { Component } from 'react';
+import React, { Component,useEffect } from 'react';
 
 import nft_example from '../img/nft_example.png';
 import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
-import {ContractHelper} from "../contractHelper";
+import {ContractHelper, INFTData} from "../contractHelper";
 import {providers} from "ethers";
 import {Link} from './';
 
 export function NftHomepage(): JSX.Element  {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
+    
+    useEffect(() => {    
+        var nft;
 
-    if (active) {
-        const contractHelper = ContractHelper.getInstance();
+        async function getNftData() {
+            const contractHelper = ContractHelper.getInstance();
 
-        if(contractHelper == undefined) 
-            return( <div></div> );
+            if (active) {
+                if(contractHelper == undefined) 
+                    return( <div></div> );
+
+                await contractHelper.getTokenURI(3);
+            }
+        }
         
-        //contractHelper.auction.nftIds()
-    }
+        getNftData();
+    }, [active]);
+
+        //const nft = await contractHelper.getTokenURI(3).then();
 
     return(
         <div className="grid grid-cols-3 px-32 font-all h-body py-8">
