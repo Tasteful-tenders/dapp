@@ -17,7 +17,7 @@ export function NftHomepage(): JSX.Element  {
         if(contractHelper == undefined) 
             return( <div></div> );
         
-        contractHelper.auction.nftIds()
+        //contractHelper.auction.nftIds()
     }
 
     return(

@@ -5,7 +5,6 @@ import {Web3Provider} from "@ethersproject/providers";
 
 import {Link, Route, NftAuction, NftHomepage, ConnectModal} from "./components";
 import {TastefulData, TastefulDataProvider} from "./context";
-import Route from "./components/Route";
 import Home from "./components/Home";
 
 function getLibrary(provider: any) {
