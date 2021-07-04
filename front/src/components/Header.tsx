@@ -62,10 +62,10 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
     if (active) {
         return (
             <>
-                <Link className={'px-9 font-medium text-medium flex items-center'} href={'/bids'}>
+                <Link className={'px-9 font-black text-title flex items-center'} href={'/bids'}>
                     BIDS
                 </Link>
-                <Link className={'px-9 font-medium text-medium flex items-center'} href={'/mint'}>
+                <Link className={'px-9 font-black text-title flex items-center'} href={'/mint'}>
                     MINT
                 </Link>
             </>
