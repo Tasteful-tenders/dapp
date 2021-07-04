@@ -12,6 +12,7 @@ export interface ITender {
 
 export interface INFTData {
     title: string;
+    author: string;
     ipfsHash: string;
 }
 
