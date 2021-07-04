@@ -4,8 +4,7 @@ import nft_example from '../img/nft_example.png';
 import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
 import {ContractHelper} from "../contractHelper";
-import {providers} from "ethers";
-import {Link} from './';
+import { Link } from 'react-router-dom';
 
 export function NftHomepage(): JSX.Element  {
     const context = useWeb3React<Web3Provider>();
@@ -35,7 +34,7 @@ export function NftHomepage(): JSX.Element  {
                     </div>
                     <div className="col-end-3 grid justify-items-end">
                         <div className="text-big uppercase font-black">Not sold</div>
-                        <Link className={'text-large font-light text-green'} href={'/NftAuction'}>
+                        <Link className={'text-large font-light text-green'} to={'/NftAuction'}>
                             add new bid
                         </Link>
                     </div>
