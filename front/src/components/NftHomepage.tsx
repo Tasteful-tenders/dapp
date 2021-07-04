@@ -5,11 +5,23 @@ import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
 import {ContractHelper} from "../contractHelper";
 import {providers} from "ethers";
-import Link from "./Link";
+import {Link} from './';
 
-export default function NftHomepage(): JSX.Element  {
+export function NftHomepage(): JSX.Element  {
+    const context = useWeb3React<Web3Provider>();
+    const {connector, library, chainId, account, activate, deactivate, active, error} = context;
+
+    if (active) {
+        const contractHelper = ContractHelper.getInstance();
+
+        if(contractHelper == undefined) 
+            return( <div></div> );
+        
+        contractHelper.auction.nftIds()
+    }
+
     return(
-        <div className="grid grid-cols-3 px-32 font-all h-body pb-8">
+        <div className="grid grid-cols-3 px-32 font-all h-body py-8">
             
             <div className="col-start-1 w-big_nft">
                 <img src={nft_example} alt="nft_example" className="shadow-xl border-nft-card"/>
@@ -23,7 +35,9 @@ export default function NftHomepage(): JSX.Element  {
                     </div>
                     <div className="col-end-3 grid justify-items-end">
                         <div className="text-big uppercase font-black">Not sold</div>
-                        <div className="text-large font-light text-green">add new bid</div>
+                        <Link className={'text-large font-light text-green'} href={'/NftAuction'}>
+                            add new bid
+                        </Link>
                     </div>
                 </div>
 
