@@ -32,8 +32,6 @@ module.exports = {
       big: '40px',
       xl: '50px',
     },
-    borderRadius: {
-    }, 
     borderColor: {
       black: "#000000",
     }, 
