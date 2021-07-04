@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Fragment} from 'react';
+import React, {useEffect, Fragment} from 'react';
 import { Menu, Transition } from '@headlessui/react'
 
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
@@ -8,9 +8,9 @@ import logo from '../img/logo.png';
 import profile_icon from '../img/profile_icon.png';
 import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
-import {ContractHelper, INFTData, ITender} from "../contractHelper";
+import {ContractHelper} from "../contractHelper";
 import {providers} from "ethers";
-import {Link} from "./";
+import { Link } from 'react-router-dom';
 
 export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: Function }): JSX.Element {
     const context = useWeb3React<Web3Provider>();
@@ -35,7 +35,7 @@ export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: F
     return (
         <nav className="flex items-center justify-between flex-wrap w-full px-32 py-5 font-all">
             <div className="flex items-center flex-shrink-0 text-white mr-6">
-                <Link className={''} href={'/'}>
+                <Link to={'/'}>
                     <img src={logo} alt="logo" className=""/>
                 </Link>
             </div>
@@ -62,10 +62,10 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
     if (active) {
         return (
             <>
-                <Link className={'px-9 font-black text-title flex items-center'} href={'/bids'}>
+                <Link className={'px-9 font-black text-title flex items-center'} to={'/bids'}>
                     BIDS
                 </Link>
-                <Link className={'px-9 font-black text-title flex items-center'} href={'/mint'}>
+                <Link className={'px-9 font-black text-title flex items-center'} to={'/mint'}>
                     MINT
                 </Link>
             </>

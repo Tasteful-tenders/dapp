@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import nft_example from '../img/nft_example.png';
-import {Link} from './';
 
 export function NftAuction(): JSX.Element{
     return(
         <div className="grid grid-cols-3 px-32 font-all h-body py-8">
             
             <div className="col-start-1 w-big_nft">
-                <Link className={''} href={'/NftHomepage'}>
+                <Link className={''} to={'/NftHomepage'}>
                     <img src={nft_example} alt="nft_example" className="shadow-xl border-nft-card"/>
                 </Link>
             </div>

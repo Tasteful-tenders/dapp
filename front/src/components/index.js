@@ -5,5 +5,3 @@ export * from './NftAuction';
 export * from './Footer.js';
 export * from './Wallet';
 export * from './ConnectModal';
-export * from './Link';
-export * from './Route';
