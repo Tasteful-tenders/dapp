@@ -7,11 +7,11 @@ import logo from '../img/logo.png';
 import profile_icon from '../img/profile_icon.png';
 import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
-import {ContractHelper} from "../contractHelper";
+import {ContractHelper, INFTData, ITender} from "../contractHelper";
 import {providers} from "ethers";
 import Link from "./Link";
 
-export function Header({setOpen}: { setOpen: Function }): JSX.Element {
+export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: Function }): JSX.Element {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
 
@@ -19,7 +19,12 @@ export function Header({setOpen}: { setOpen: Function }): JSX.Element {
         async function init() {
             if (active && connector) {
                 const web3Provider = new providers.Web3Provider(await connector.getProvider());
-                ContractHelper.init(web3Provider);
+                const contractHelper = ContractHelper.init(web3Provider);
+                const tenderIds = await contractHelper.fetchAllNftIds();
+                setTenders({
+                    tenders: await contractHelper.fetchAllTenders(tenderIds),
+                    nftsData: await contractHelper.fetchAllNftData(tenderIds)
+                });
             }
         }
 
@@ -56,11 +61,11 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
     if (active) {
         return (
             <>
-                <Link className={'bg-black text-white px-9 focus:outline-none border-rounded font-medium text-medium'} href={'/test'}>
-                    test
+                <Link className={'px-9 font-medium text-medium'} href={'/bids'}>
+                    BIDS
                 </Link>
-                <Link className={'bg-black text-white px-9 focus:outline-none border-rounded font-medium text-medium'} href={'/test2'}>
-                    test2
+                <Link className={'px-9 font-medium text-medium'} href={'/mint'}>
+                    MINT
                 </Link>
             </>
         );

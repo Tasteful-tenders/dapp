@@ -1,13 +1,18 @@
-import {Contract} from "ethers";
+import {BigNumber, Contract} from "ethers";
 import {AUCTION_ABI, AUCTION_ADDR, NFT_FACTORY_ABI, NFT_FACTORY_ADDR, TTK_ABI, TTK_ADDR} from "./constants";
 
-interface ITender {
+export interface ITender {
     owner: string;
-    startPrice: number;
+    startPrice: BigNumber;
     endDate: number;
     highestBidder: string;
-    highestBid: number;
+    highestBid: BigNumber;
     active: boolean;
+}
+
+export interface INFTData {
+    title: string;
+    ipfsHash: string;
 }
 
 export class ContractHelper {
@@ -42,20 +47,43 @@ export class ContractHelper {
         this.auction = auction;
     }
 
-    /**
-    public async fetchAllAuctions(): Promise<ITender[]> {
-        const tenders: any[] = await this.auction.queryFilter(this.auction.filters.logAddNFT());
-        return tenders.map((log: any) => {
-            return {
-                    owner: '',
-                    startPrice: 0,
-                    endDate: 0,
-                    highestBidder: '',
-                    highestBid: 0,
-                    active: true
-                };
+    public async fetchAllNftIds(): Promise<any[]> {
+        const events: any[] = await this.auction.queryFilter(this.auction.filters.logAddNFT());
+        return events.map((log: any) => {
+            return log.args._nftId;
         });
     }
-     **/
+
+    public async fetchAllBids(nftId: BigNumber): Promise<any[]> {
+        const events: any[] = await this.auction.queryFilter(this.auction.filters.logBid(nftId));
+        return events.map((log: any) => {
+            return log.args._bid;
+        });
+    }
+
+    public async fetchAllTenders(tenderIds: any[]): Promise<ITender[]> {
+        return await Promise.all(tenderIds.map(async (id) => {
+            const tender = await this.auction.tenders(id);
+            return {
+                owner: tender.owner,
+                startPrice: tender.startPrice,
+                endDate: tender.endDate,
+                highestBidder: tender.highestBidder,
+                highestBid: tender.highestBid,
+                active: tender.active
+            }
+        }));
+    }
+
+    public async fetchAllNftData(tenderIds: any[]): Promise<INFTData[]> {
+        return await Promise.all(tenderIds.map(async (id) => {
+            return await this.getTokenURI(id);
+        }));
+    }
+
+    public async getTokenURI(nftId: number): Promise<INFTData> {
+        const tokenURI: string = await this.nftFactory.tokenURI(nftId);
+        return JSON.parse(tokenURI.slice(1, tokenURI.length-1));
+    }
 
 }
