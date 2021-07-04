@@ -11,6 +11,7 @@ export interface ITender {
 }
 
 export interface INFTData {
+    id: number;
     title: string;
     author: string;
     description: string;
@@ -85,7 +86,10 @@ export class ContractHelper {
 
     public async getNftData(nftId: BigNumber): Promise<INFTData> {
         const tokenURI: string = await this.nftFactory.tokenURI(nftId);
-        return JSON.parse(tokenURI.slice(1, tokenURI.length-1));
+        return {
+            id: nftId.toNumber(),
+            ...JSON.parse(tokenURI.slice(1, tokenURI.length-1))
+        };
     }
 
 }

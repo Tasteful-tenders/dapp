@@ -10,7 +10,7 @@ export function TenderCard({nftData, tender}: { nftData: INFTData, tender: ITend
 
     return (
             <div className={"w-nft_card relative font-all"}>
-                <Link to={"/nftHomepage"}>
+                <Link to={"/nftHomepage/"+nftData.id}>
                 <div
                     className={"absolute bg-white w-full h-top_card grid justify-items-center border-top-nft-card shadow-xl top-0"}>
                     <h3 className="flex items-center text-large font-black">{nftData.title}</h3>
