@@ -54,6 +54,13 @@ export class ContractHelper {
         });
     }
 
+    public async fetchAllBids(nftId: BigNumber): Promise<any[]> {
+        const events: any[] = await this.auction.queryFilter(this.auction.filters.logBid(nftId));
+        return events.map((log: any) => {
+            return log.args._bid;
+        });
+    }
+
     public async fetchAllTenders(tenderIds: any[]): Promise<ITender[]> {
         return await Promise.all(tenderIds.map(async (id) => {
             const tender = await this.auction.tenders(id);
