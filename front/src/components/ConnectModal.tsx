@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
 import {Wallet} from "./Wallet";
 
-export default function ConnectModal({open, setOpen}: {open: boolean, setOpen: Function}): JSX.Element {
+export function ConnectModal({open, setOpen}: {open: boolean, setOpen: Function}): JSX.Element {
 
     return (
         <Transition.Root show={open} as={Fragment}>

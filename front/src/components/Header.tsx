@@ -10,7 +10,7 @@ import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
 import {ContractHelper} from "../contractHelper";
 import {providers} from "ethers";
-import Link from "./Link";
+import {Link} from "./";
 
 export function Header({setOpen}: { setOpen: Function }, {setDropdwown}: { setDropdwown: Function }): JSX.Element {
     const context = useWeb3React<Web3Provider>();
