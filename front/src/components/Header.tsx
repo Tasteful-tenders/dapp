@@ -18,13 +18,17 @@ export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: F
 
     useEffect(() => {
         async function init() {
-            if (active && connector) {
+            if (active && connector && account) {
                 const web3Provider = new providers.Web3Provider(await connector.getProvider());
                 const contractHelper = ContractHelper.init(web3Provider);
                 const tenderIds = await contractHelper.fetchAllNftIds();
                 setTenders({
                     tenders: await contractHelper.fetchAllTenders(tenderIds),
-                    nftsData: await contractHelper.fetchAllNftData(tenderIds)
+                    nftsData: await contractHelper.fetchAllNftData(tenderIds),
+                    userNfts: {
+                        owned: await contractHelper.fetchAllNftData(await contractHelper.fetchOwnedNftIds(account)),
+                        created: await contractHelper.fetchAllNftData(await contractHelper.fetchCreatedNftIds(account))
+                    }
                 });
             }
         }

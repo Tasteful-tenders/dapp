@@ -1,8 +1,22 @@
 import {createContext} from "react";
+import {INFTData, ITender} from "./contractHelper";
 
-const tastefulData = {
+interface ITastefulData {
+    tenders: ITender[];
+    nftsData: INFTData[];
+    userNfts: {
+        owned: INFTData[],
+        created: INFTData[]
+    }
+}
+
+const tastefulData: ITastefulData = {
     tenders: [],
-    nftsData: []
+    nftsData: [],
+    userNfts: {
+        owned: [],
+        created: []
+    }
 }
 
 export const TastefulData = createContext(tastefulData);
