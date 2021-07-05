@@ -20,7 +20,7 @@ export function NftHomepage(): JSX.Element  {
                 if(contractHelper == undefined) 
                     return( <div></div> );
 
-                await contractHelper.getTokenURI(3);
+                //await contractHelper.getNftData(3);
             }
         }
         
