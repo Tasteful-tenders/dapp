@@ -48,7 +48,7 @@ export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: F
             </div>
             <div className="flex flex-shrink-0">
                 <NavBar setOpen={setOpen}/>
-                <Dropdown/>
+                <Dropdown active={active}/>
             </div>
         </nav>
     );
@@ -79,26 +79,23 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
         </button>);
 }
 
-function Dropdown(): JSX.Element {
+function Dropdown({active}: {active: boolean}): JSX.Element {
 
     return (
         <div className="font-all">
             <Menu as="div" className="relative inline-block text-left">
-                <Menu.Button><img src={profile_icon} alt="profile_icon" className="h-xl pl-5 "/></Menu.Button> 
+                <Menu.Button><img src={profile_icon} alt="profile_icon" className="h-xl pl-5 "/></Menu.Button>
+                {active ?
                 <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
                     <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
-                            {({ active }) => (
-                                <a href="/account" className={`${ active ? 'text-light' : 'text-light' } group flex rounded-md items-center w-full px-2 py-2 font-large`}>Account</a>
-                            )}
+                            <Link to={"/account"} className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large'}>Account</Link>
                         </Menu.Item>
                         <Menu.Item>
-                        {({ active }) => (
-                                <a href="/account" className={`${ active ? 'text-light' : 'text-light' } group flex rounded-md items-center w-full px-2 py-2 font-large text-light`}>Claim</a>
-                            )}
+                            <Link to={"/claim"} className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large text-light'}>Claim</Link>
                         </Menu.Item>
                     </Menu.Items>
-                </Transition>
+                </Transition> : <></>}
             </Menu>
         </div>
     );

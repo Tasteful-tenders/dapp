@@ -35,6 +35,12 @@ function App(): JSX.Element {
                             <Route path={'/mint'}>
                                 <h1>mint</h1>
                             </Route>
+                            <Route path={'/account'}>
+                                <h1>account</h1>
+                            </Route>
+                            <Route path={'/claim'}>
+                                <h1>claim</h1>
+                            </Route>
                             <Route path={'/NftHomepage'}>
                                 <NftHomepage/>
                             </Route>
