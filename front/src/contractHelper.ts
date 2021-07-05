@@ -92,4 +92,27 @@ export class ContractHelper {
         };
     }
 
+    public async fetchOwnedNftIds(address :string): Promise<BigNumber[]> {
+        const balanceOf = await this.nftFactory.balanceOf(address);
+        if (balanceOf === BigNumber.from(0)) {
+            return [];
+        }
+        const received: any[] = await this.nftFactory.queryFilter(this.nftFactory.filters.Transfer(null, address));
+        let ownedNfts: BigNumber[] = [];
+        await Promise.all(received.map(async (log) => {
+            const owner = await this.nftFactory.ownerOf(log.args.tokenId);
+            if (owner === address) {
+                ownedNfts.push(log.args.tokenId);
+            }
+        }));
+        return ownedNfts;
+    }
+
+    public async fetchCreatedNftIds(address :string): Promise<BigNumber[]> {
+        const created: any[] = await this.nftFactory.queryFilter(this.nftFactory.filters.Transfer('0x0000000000000000000000000000000000000000', address));
+        return created.map((log) => {
+            return log.args.tokenId;
+        });
+    }
+
 }
