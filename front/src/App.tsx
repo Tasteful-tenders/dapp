@@ -11,6 +11,7 @@ import {
     Route,
     Link
 } from "react-router-dom";
+import {Account} from "./components/Account";
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -36,7 +37,7 @@ function App(): JSX.Element {
                                 <h1>mint</h1>
                             </Route>
                             <Route path={'/account'}>
-                                <h1>account</h1>
+                                <Account/>
                             </Route>
                             <Route path={'/claim'}>
                                 <h1>claim</h1>
