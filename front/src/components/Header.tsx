@@ -34,7 +34,7 @@ export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: F
         }
 
         init();
-    }, [active]);
+    }, [active, account, chainId]);
 
     return (
         <nav className="flex items-center justify-between flex-wrap w-full px-32 py-5 font-all">
