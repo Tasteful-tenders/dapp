@@ -1,5 +1,5 @@
 import React, {useEffect, Fragment} from 'react';
-import { Menu, Transition } from '@headlessui/react'
+import {Menu, Transition} from '@headlessui/react'
 
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -10,9 +10,9 @@ import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
 import {ContractHelper} from "../contractHelper";
 import {providers} from "ethers";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
-export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: Function }): JSX.Element {
+export function Header({setOpen, setTastefulData}: { setOpen: Function, setTastefulData: Function }): JSX.Element {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
 
@@ -22,13 +22,19 @@ export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: F
                 const web3Provider = new providers.Web3Provider(await connector.getProvider());
                 const contractHelper = ContractHelper.init(web3Provider);
                 const tenderIds = await contractHelper.fetchAllNftIds();
-                setTenders({
+                const rawResponse = await fetch(`http://localhost:4000/user/get/${account}`, {
+                    method: 'GET',
+                });
+                const userData = await rawResponse.json();
+                console.log(userData);
+                setTastefulData({
                     tenders: await contractHelper.fetchAllTenders(tenderIds),
                     nftsData: await contractHelper.fetchAllNftData(tenderIds),
                     userNfts: {
                         owned: await contractHelper.fetchAllNftData(await contractHelper.fetchOwnedNftIds(account)),
                         created: await contractHelper.fetchAllNftData(await contractHelper.fetchCreatedNftIds(account))
-                    }
+                    },
+                    userData: userData
                 });
             }
         }
@@ -83,25 +89,31 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
         </button>);
 }
 
-function Dropdown({active}: {active: boolean}): JSX.Element {
+function Dropdown({active}: { active: boolean }): JSX.Element {
 
     return (
         <div className="font-all">
             <Menu as="div" className="relative inline-block text-left">
                 <Menu.Button><img src={profile_icon} alt="profile_icon" className="h-xl pl-5 "/></Menu.Button>
                 {active ?
-                <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
-                    <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Menu.Item>
-                            <Link to={"/account"} className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large'}>Account</Link>
-                        </Menu.Item>
-                        <Menu.Item>
-                            <Link to={"/claim"} className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large text-light'}>Claim</Link>
-                        </Menu.Item>
-                    </Menu.Items>
-                </Transition> : <></>}
+                    <Transition as={Fragment} enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95">
+                        <Menu.Items
+                            className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Menu.Item>
+                                <Link to={"/account"}
+                                      className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large'}>Account</Link>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <Link to={"/claim"}
+                                      className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large text-light'}>Claim</Link>
+                            </Menu.Item>
+                        </Menu.Items>
+                    </Transition> : <></>}
             </Menu>
         </div>
     );
-    
+
 }
