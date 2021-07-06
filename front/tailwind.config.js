@@ -27,6 +27,7 @@ module.exports = {
       full: '100%',
       profile: '55px',
       middle: '50%',
+      two_third: '75%',
       icon: '20px',
       big_nft: '515px',
       nft_card: '250px',
