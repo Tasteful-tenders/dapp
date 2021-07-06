@@ -9,7 +9,9 @@ function Home(): JSX.Element {
     return (
         <div className={"grid grid-cols-5 gap-4"}>
             {tenders && tenders.map((tender, index) => {
-                return <TenderCard tender={tender} nftData={nftsData[index]} key={index}/>
+                if (tender.active && tender.endDate.toNumber() * 1000 > new Date().getTime()) {
+                    return <TenderCard tender={tender} nftData={nftsData[index]} key={index}/>
+                }
             })}
         </div>
     );
