@@ -16,6 +16,10 @@ module.exports = {
       top_card: '60px',
       bid_card: '70px',
       bottom_card: '90px',
+      image_card: '250px'
+    },
+    maxHeight: {
+      image_card: '250px'
     },
     width: {
       button: '250px',
