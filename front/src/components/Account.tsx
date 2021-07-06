@@ -4,6 +4,8 @@ import {Web3Provider} from "@ethersproject/providers";
 import {INFTData} from "../contractHelper";
 import {TastefulData} from "../context";
 import {TenderCard} from "./TenderCard";
+import twitter from './../img/twitter.png';
+import instagram from './../img/instagram.png';
 
 export function Account(): JSX.Element {
     const web3Context = useWeb3React<Web3Provider>();
@@ -23,9 +25,17 @@ export function Account(): JSX.Element {
         <div className={"grid grid-cols-3 m-2"}>
             <div className={"p-12"}>
                 <img className={"m-auto border-nft-card"} src={"https://via.placeholder.com/250"} alt={"img"}/>
-                <h3 className={"text-medium font-black break-words"}>{account}</h3>
-                <h3>twitter</h3>
-                <h3>instagram</h3>
+                <h3 className={"text-medium font-black break-words my-8"}>{account}</h3>
+                <div className={"mt-32"}>
+                    <a className={"block mb-4"} href={"https://twitter.com/hhk_eth"} target={"_blank"}>
+                        <img className={"h-logo inline-block mr-12"} src={twitter} alt={'logo'}/>
+                        <h3 className={"inline-block text-medium"}>@HHK_ETH</h3>
+                    </a>
+                    <a className={"block"} href={"https://instagram.com/hhk_eth"} target={"_blank"}>
+                        <img className={"h-logo inline-block mr-12 -mt-2"} src={instagram} alt={'logo'}/>
+                        <h3 className={"inline-block text-medium"}>@HHK_ETH</h3>
+                    </a>
+                </div>
             </div>
             <div className={"col-span-2"}>
                 <div className={"w-two_third mb-8"}>
