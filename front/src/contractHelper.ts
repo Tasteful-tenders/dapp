@@ -4,14 +4,14 @@ import {AUCTION_ABI, AUCTION_ADDR, NFT_FACTORY_ABI, NFT_FACTORY_ADDR, TTK_ABI, T
 export interface ITender {
     owner: string;
     startPrice: BigNumber;
-    endDate: number;
+    endDate: BigNumber;
     highestBidder: string;
     highestBid: BigNumber;
     active: boolean;
 }
 
 export interface INFTData {
-    id: number;
+    id: BigNumber;
     title: string;
     author: string;
     description: string;
@@ -51,9 +51,9 @@ export class ContractHelper {
     }
 
     public async fetchAllNftIds(): Promise<any[]> {
-        const events: any[] = await this.auction.queryFilter(this.auction.filters.logAddNFT());
+        const events: any[] = await this.nftFactory.queryFilter(this.nftFactory.filters.Transfer('0x0000000000000000000000000000000000000000'));
         return events.map((log: any) => {
-            return log.args._nftId;
+            return log.args.tokenId;
         });
     }
 
@@ -86,8 +86,20 @@ export class ContractHelper {
 
     public async getNftData(nftId: BigNumber): Promise<INFTData> {
         const tokenURI: string = await this.nftFactory.tokenURI(nftId);
+        try {
+            JSON.parse(tokenURI.slice(1, tokenURI.length-1));
+        } catch (e) {
+            console.log('impossible to parse nft n°'+nftId.toNumber()+' returning empty object');
+            return {
+                id: nftId,
+                title: '',
+                author: '',
+                description: '',
+                ipfsHash: ''
+            };
+        }
         return {
-            id: nftId.toNumber(),
+            id: nftId,
             ...JSON.parse(tokenURI.slice(1, tokenURI.length-1))
         };
     }
