@@ -8,7 +8,8 @@ export interface ITastefulData {
         owned: INFTData[],
         created: INFTData[]
     },
-    userData: IUserData
+    userData: IUserData,
+    setTastefulData: Function
 }
 
 export interface IUserData {
@@ -36,7 +37,8 @@ export const defaultTastefulData: ITastefulData = {
         profilePic: '',
         twitter: '',
         instagram: ''
-    }
+    },
+    setTastefulData: () => {}
 }
 
 export const TastefulData = createContext(defaultTastefulData);

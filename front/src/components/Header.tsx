@@ -1,4 +1,4 @@
-import React, {useEffect, Fragment} from 'react';
+import React, {useEffect, Fragment, useState} from 'react';
 import {Menu, Transition} from '@headlessui/react'
 
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
@@ -26,7 +26,6 @@ export function Header({setOpen, setTastefulData}: { setOpen: Function, setTaste
                     method: 'GET',
                 });
                 const userData = await rawResponse.json();
-                console.log(userData);
                 setTastefulData({
                     tenders: await contractHelper.fetchAllTenders(tenderIds),
                     nftsData: await contractHelper.fetchAllNftData(tenderIds),
@@ -34,7 +33,8 @@ export function Header({setOpen, setTastefulData}: { setOpen: Function, setTaste
                         owned: await contractHelper.fetchAllNftData(await contractHelper.fetchOwnedNftIds(account)),
                         created: await contractHelper.fetchAllNftData(await contractHelper.fetchCreatedNftIds(account))
                     },
-                    userData: userData
+                    userData: userData,
+                    setTastefulData: setTastefulData
                 });
             }
         }
