@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import express from "express";
 import {User} from "../models";
+import {ethers} from "ethers";
 
 const userRouter = express.Router();
 
@@ -45,15 +46,22 @@ userRouter.get('/get/:address', async (req, res: express.Response) => {
 userRouter.post('/update/:address', async (req, res: express.Response) => {
     const address: string = req.params.address;
     const user = await User.findOne({address: address}).exec();
-    if (user === null) {
+    if (user === null || req.body.userData === undefined || req.body.signature === undefined) {
         res.status(404).end();
         return;
     }
 
-    console.log(req.body)
+    const msgHash = ethers.utils.hashMessage(JSON.stringify(req.body.userData));
+    const msgHashBytes = ethers.utils.arrayify(msgHash);
+    const recoveredAddress = ethers.utils.recoverAddress(msgHashBytes, req.body.signature);
+
+    if (recoveredAddress !== address) {
+        res.status(403).end();
+        return;
+    }
 
     try {
-        user.set(req.body);
+        user.set(req.body.userData);
         const result = await user.save();
 
         res.status(200).json(user).end();
