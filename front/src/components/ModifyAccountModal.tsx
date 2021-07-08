@@ -5,43 +5,40 @@ import {providers} from "ethers";
 import {useWeb3React} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
 
-export default function ModifyAccountModal({isOpen, setIsOpen}: { isOpen: boolean, setIsOpen: Function }) {
+export default function ModifyAccountModal({isOpen, setIsOpen, accountData, setAccountData}: { isOpen: boolean, setIsOpen: Function, accountData: IUserData, setAccountData: Function }) {
     const web3Context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = web3Context;
-    const tastefulContext = useContext(TastefulData);
-    const {tenders, nftsData, userNfts, userData} = tastefulContext;
 
-    let newUserData: IUserData = {
-        _id: userData._id,
-        address: userData.address,
-        bio: userData.bio,
-        instagram: userData.instagram,
-        profilePic: userData.profilePic,
-        pseudo: userData.pseudo,
-        twitter: userData.twitter
+    let newAccountData: IUserData = {
+        _id: accountData._id,
+        address: accountData.address,
+        bio: accountData.bio,
+        instagram: accountData.instagram,
+        profilePic: accountData.profilePic,
+        pseudo: accountData.pseudo,
+        twitter: accountData.twitter
     };
 
     async function updateAndSign() {
         if (connector === undefined) return;
         const web3Provider = new providers.Web3Provider(await connector.getProvider());
         const signer = web3Provider.getSigner();
-        const signature = await signer.signMessage(JSON.stringify(newUserData));
+        const signature = await signer.signMessage(JSON.stringify(newAccountData));
 
-        fetch(`http://localhost:4000/user/update/${tastefulContext.userData.address}`, {
+        fetch(`http://localhost:4000/user/update/${accountData.address}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userData: newUserData,
+                userData: newAccountData,
                 signature: signature
             })
         }).then((res) => {
             return res.json().then((res) => {
-                tastefulContext.userData = res;
-                tastefulContext.setTastefulData({
-                    ...tastefulContext
+                setAccountData({
+                    ...res
                 });
             });
         });
@@ -102,32 +99,32 @@ export default function ModifyAccountModal({isOpen, setIsOpen}: { isOpen: boolea
                                     </label>
                                     <input
                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="text" defaultValue={newUserData.pseudo} onChange={e => {
-                                        newUserData.pseudo = e.target.value
+                                        type="text" defaultValue={newAccountData.pseudo} onChange={e => {
+                                        newAccountData.pseudo = e.target.value
                                     }} placeholder="Pseudo"/>
                                     <label className="text-small font-bold mb-2">
                                         Profile picture
                                     </label>
                                     <input
                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="text" defaultValue={newUserData.profilePic} onChange={e => {
-                                        newUserData.profilePic = e.target.value
+                                        type="text" defaultValue={newAccountData.profilePic} onChange={e => {
+                                        newAccountData.profilePic = e.target.value
                                     }} placeholder="Link to a profile picture"/>
                                     <label className="text-small font-bold mb-2">
                                         Twitter name
                                     </label>
                                     <input
                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="text" defaultValue={newUserData.twitter} onChange={e => {
-                                        newUserData.twitter = e.target.value
+                                        type="text" defaultValue={newAccountData.twitter} onChange={e => {
+                                        newAccountData.twitter = e.target.value
                                     }} placeholder="Twitter name"/>
                                     <label className="text-small font-bold mb-2">
                                         Instagram name
                                     </label>
                                     <input
                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="text" defaultValue={newUserData.instagram} onChange={e => {
-                                        newUserData.instagram = e.target.value
+                                        type="text" defaultValue={newAccountData.instagram} onChange={e => {
+                                        newAccountData.instagram = e.target.value
                                     }} placeholder="Instagram name"/>
                                     <label className="text-small font-bold mb-2">
                                         BIO
@@ -135,8 +132,8 @@ export default function ModifyAccountModal({isOpen, setIsOpen}: { isOpen: boolea
                                     <textarea
                                         className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
                                         rows={4} onChange={e => {
-                                        newUserData.bio = e.target.value
-                                    }}>{newUserData.bio}</textarea>
+                                        newAccountData.bio = e.target.value
+                                    }}>{newAccountData.bio}</textarea>
                                 </div>
 
                                 <div className="mt-4">

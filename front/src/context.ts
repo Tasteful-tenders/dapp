@@ -4,11 +4,6 @@ import {INFTData, ITender} from "./contractHelper";
 export interface ITastefulData {
     tenders: ITender[];
     nftsData: INFTData[];
-    userNfts: {
-        owned: INFTData[],
-        created: INFTData[]
-    },
-    userData: IUserData,
     setTastefulData: Function
 }
 
@@ -25,19 +20,6 @@ export interface IUserData {
 export const defaultTastefulData: ITastefulData = {
     tenders: [],
     nftsData: [],
-    userNfts: {
-        owned: [],
-        created: []
-    },
-    userData: {
-        _id: '',
-        address: '',
-        pseudo: '',
-        bio: '',
-        profilePic: '',
-        twitter: '',
-        instagram: ''
-    },
     setTastefulData: () => {}
 }
 

@@ -1,19 +1,61 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useWeb3React} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
-import {INFTData} from "../contractHelper";
-import {TastefulData} from "../context";
+import {ContractHelper, INFTData} from "../contractHelper";
+import {IUserData, TastefulData} from "../context";
 import {TenderCard} from "./TenderCard";
 import twitter from './../img/twitter.png';
 import instagram from './../img/instagram.png';
 import ModifyAccountModal from "./ModifyAccountModal";
+import { useParams } from "react-router-dom";
 
 export function Account(): JSX.Element {
     const web3Context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = web3Context;
     const tastefulContext = useContext(TastefulData);
-    const {tenders, nftsData, userNfts, userData} = tastefulContext;
+    const {tenders, nftsData } = tastefulContext;
     let [isOpen, setIsOpen] = useState(false);
+    let [accountData, setAccountData] : [accountData: IUserData, setAccountData: Function] = useState({
+        _id: "",
+        address: "",
+        bio: "",
+        instagram: "",
+        profilePic: "",
+        pseudo: "",
+        twitter: ""
+    });
+    let [accountNfts, setAccountNfts]: [accountNfts: {created: INFTData[], owned: INFTData[]}, setAccountNfts: Function] = useState({
+        owned: [],
+        created: []
+    })
+
+    const { address } : {address: string} = useParams();
+    const contractHelper = ContractHelper.getInstance();
+
+    useEffect(() => {
+        async function fetchUserData() {
+            if (contractHelper === undefined) return;
+            let owned, created: any = [];
+            try {
+                owned = await contractHelper.fetchAllNftData(await contractHelper.fetchOwnedNftIds(address));
+                created = await contractHelper.fetchAllNftData(await contractHelper.fetchCreatedNftIds(address));
+            }
+            catch (e) {
+                console.log('Invalid address in url !');
+                return;
+            }
+            const rawResponse = await fetch(`http://localhost:4000/user/get/${address}`, {
+                method: 'GET',
+            });
+            const accountData = await rawResponse.json();
+            setAccountData(accountData);
+            setAccountNfts({
+                owned: owned,
+                created: created
+            });
+        }
+        fetchUserData();
+    }, [address, contractHelper]);
 
     function openModal() {
         setIsOpen(true)
@@ -30,24 +72,24 @@ export function Account(): JSX.Element {
     return (
         <div className={"grid grid-cols-3 m-2"}>
             <div className={"p-12"}>
-                <img className={"m-auto border-nft-card w-profile_pic"} src={userData.profilePic !== undefined ? userData.profilePic : "https://via.placeholder.com/250"} alt={"img"}/>
-                <h3 className={"text-medium font-black break-words my-8 text-center"}>{userData.pseudo !== undefined ? userData.pseudo : account}</h3>
+                <img className={"m-auto border-nft-card w-profile_pic"} src={accountData.profilePic !== undefined ? accountData.profilePic : "https://via.placeholder.com/250"} alt={"img"}/>
+                <h3 className={"text-medium font-black break-words my-8 text-center"}>{accountData.pseudo !== undefined ? accountData.pseudo : address}</h3>
                 <div className={"mt-32"}>
-                    <a className={"block mb-4"} href={"https://twitter.com/" + userData.twitter} target={"_blank"}>
+                    <a className={"block mb-4"} href={"https://twitter.com/" + accountData.twitter} target={"_blank"}>
                         <img className={"h-logo inline-block mr-12"} src={twitter} alt={'logo'}/>
-                        <h3 className={"inline-block text-medium"}>{userData.twitter !== undefined ? '@' + userData.twitter : 'No account'}</h3>
+                        <h3 className={"inline-block text-medium"}>{accountData.twitter !== undefined ? '@' + accountData.twitter : 'No account'}</h3>
                     </a>
-                    <a className={"block"} href={"https://instagram.com/" + userData.instagram} target={"_blank"}>
+                    <a className={"block"} href={"https://instagram.com/" + accountData.instagram} target={"_blank"}>
                         <img className={"h-logo inline-block mr-12 -mt-2"} src={instagram} alt={'logo'}/>
-                        <h3 className={"inline-block text-medium"}>{userData.instagram !== undefined ? '@' + userData.instagram : 'No account'}</h3>
+                        <h3 className={"inline-block text-medium"}>{accountData.instagram !== undefined ? '@' + accountData.instagram : 'No account'}</h3>
                     </a>
                 </div>
-                <button onClick={openModal}>Update profile</button>
+                {account === address ? <button onClick={openModal}>Update profile</button> : <></>}
             </div>
             <div className={"col-span-2"}>
                 <div className={"w-two_third mb-8"}>
                     <h3 className={"text-large font-black mb-4"}>BIO</h3>
-                    <p>{userData.bio ? userData.bio : 'No bio'}</p>
+                    <p>{accountData.bio ? accountData.bio : 'No bio'}</p>
                 </div>
                 <div>
                     <div className={"grid grid-cols-8"}>
@@ -55,18 +97,18 @@ export function Account(): JSX.Element {
                         <div className={"col-span-7 border-b-2 -ml-4 mr-16 mb-9"}> </div>
                     </div>
                     <div className={"grid grid-cols-5 gap-4"}>
-                        {userNfts && userNfts.created.map((data: INFTData, index) => {
+                        {accountNfts && accountNfts.created.map((data: INFTData, index) => {
                             return <TenderCard nftData={data} tender={tenders[data.id.toNumber() - 1]} key={index}/>
                         })}
                     </div>
                     <div>
-                        {userNfts && userNfts.owned.map((data: INFTData, index) => {
+                        {accountNfts && accountNfts.owned.map((data: INFTData, index) => {
                             return <TenderCard nftData={data} tender={tenders[data.id.toNumber() - 1]} key={index}/>
                         })}
                     </div>
                 </div>
             </div>
-            <ModifyAccountModal isOpen={isOpen} setIsOpen={setIsOpen}/>
+            <ModifyAccountModal isOpen={isOpen} setIsOpen={setIsOpen} accountData={accountData} setAccountData={setAccountData}/>
         </div>
     );
 }

@@ -36,7 +36,7 @@ function App(): JSX.Element {
                             <Route path={'/mint'}>
                                 <h1>mint</h1>
                             </Route>
-                            <Route path={'/account'}>
+                            <Route path={'/account/:address'}>
                                 <Account/>
                             </Route>
                             <Route path={'/claim'}>

@@ -22,18 +22,9 @@ export function Header({setOpen, setTastefulData}: { setOpen: Function, setTaste
                 const web3Provider = new providers.Web3Provider(await connector.getProvider());
                 const contractHelper = ContractHelper.init(web3Provider);
                 const tenderIds = await contractHelper.fetchAllNftIds();
-                const rawResponse = await fetch(`http://localhost:4000/user/get/${account}`, {
-                    method: 'GET',
-                });
-                const userData = await rawResponse.json();
                 setTastefulData({
                     tenders: await contractHelper.fetchAllTenders(tenderIds),
                     nftsData: await contractHelper.fetchAllNftData(tenderIds),
-                    userNfts: {
-                        owned: await contractHelper.fetchAllNftData(await contractHelper.fetchOwnedNftIds(account)),
-                        created: await contractHelper.fetchAllNftData(await contractHelper.fetchCreatedNftIds(account))
-                    },
-                    userData: userData,
                     setTastefulData: setTastefulData
                 });
             }
@@ -58,7 +49,7 @@ export function Header({setOpen, setTastefulData}: { setOpen: Function, setTaste
             </div>
             <div className="flex flex-shrink-0">
                 <NavBar setOpen={setOpen}/>
-                <Dropdown active={active}/>
+                <Dropdown active={active} account={account}/>
             </div>
         </nav>
     );
@@ -89,7 +80,7 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
         </button>);
 }
 
-function Dropdown({active}: { active: boolean }): JSX.Element {
+function Dropdown({active, account}: { active: boolean, account: any }): JSX.Element {
 
     return (
         <div className="font-all">
@@ -103,7 +94,7 @@ function Dropdown({active}: { active: boolean }): JSX.Element {
                         <Menu.Items
                             className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <Menu.Item>
-                                <Link to={"/account"}
+                                <Link to={"/account/"+account}
                                       className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large'}>Account</Link>
                             </Menu.Item>
                             <Menu.Item>
