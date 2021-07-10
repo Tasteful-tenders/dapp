@@ -5,6 +5,17 @@ import {INFTData, ITender} from "../contractHelper";
 
 export function TenderCard({nftData, tender}: { nftData: INFTData, tender: ITender }): JSX.Element {
 
+    if (tender === undefined) {
+        tender = {
+            active: false,
+            endDate: BigNumber.from(0),
+            highestBid: BigNumber.from(0),
+            highestBidder: "",
+            owner: "",
+            startPrice: BigNumber.from(0)
+        }
+    }
+
     const currentBid: BigNumber = tender.highestBid.toNumber() !== 0 ? tender.highestBid : tender.startPrice;
     const hoursLeft: string = ((new Date(tender.endDate.toNumber() * 1000).getTime() - new Date().getTime()) / 3_600_000).toFixed(1);
 
