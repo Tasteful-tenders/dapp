@@ -93,15 +93,19 @@ export function Account(): JSX.Element {
                 </div>
                 <div>
                     <div className={"grid grid-cols-8"}>
-                        <div><h3 className={"text-large font-black mb-4"}>My NFTs</h3></div>
-                        <div className={"col-span-7 border-b-2 -ml-4 mr-16 mb-9"}> </div>
+                        <div><h3 className={"text-medium font-black mb-4"}>Created NFTs</h3></div>
+                        <div className={"col-span-7 border-b-2 mr-16 mb-8"}> </div>
                     </div>
-                    <div className={"grid grid-cols-5 gap-4"}>
+                    <div className={"grid grid-cols-4 gap-4"}>
                         {accountNfts && accountNfts.created.map((data: INFTData, index) => {
                             return <TenderCard nftData={data} tender={tenders[data.id.toNumber() - 1]} key={index}/>
                         })}
                     </div>
-                    <div>
+                    <div className={"grid grid-cols-8 mt-8"}>
+                        <div><h3 className={"text-medium font-black mb-4"}>Owned NFTs</h3></div>
+                        <div className={"col-span-7 border-b-2 mr-16 mb-8"}> </div>
+                    </div>
+                    <div className={"grid grid-cols-4 gap-4"}>
                         {accountNfts && accountNfts.owned.map((data: INFTData, index) => {
                             return <TenderCard nftData={data} tender={tenders[data.id.toNumber() - 1]} key={index}/>
                         })}
