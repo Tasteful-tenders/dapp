@@ -35,10 +35,10 @@ function App(): JSX.Element {
                             <Route path={'/mint'}>
                                 <h1>mint</h1>
                             </Route>
-                            <Route path={'/NftHomepage'}>
+                            <Route path={'/NftHomepage/:id'}>
                                 <NftHomepage/>
                             </Route>
-                            <Route path={'/NftAuction'}>
+                            <Route path={'/NftAuction/:id'}>
                                 <NftAuction/>
                             </Route>
                             <Route path={'/'}>
