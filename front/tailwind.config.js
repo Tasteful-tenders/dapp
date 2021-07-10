@@ -16,6 +16,11 @@ module.exports = {
       top_card: '60px',
       bid_card: '70px',
       bottom_card: '90px',
+      image_card: '250px',
+      logo: '25px'
+    },
+    maxHeight: {
+      image_card: '250px'
     },
     width: {
       button: '250px',
@@ -23,10 +28,12 @@ module.exports = {
       full: '100%',
       profile: '55px',
       middle: '50%',
+      two_third: '75%',
       icon: '20px',
       big_nft: '515px',
       nft_card: '250px',
       bid_card: '490px',
+      profile_pic: '250px'
     },
     fontSize: {
       xs: '10px',

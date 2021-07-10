@@ -1,5 +1,5 @@
-import React, {useEffect, Fragment} from 'react';
-import { Menu, Transition } from '@headlessui/react'
+import React, {useEffect, Fragment, useState} from 'react';
+import {Menu, Transition} from '@headlessui/react'
 
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -10,27 +10,28 @@ import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
 import {ContractHelper} from "../contractHelper";
 import {providers} from "ethers";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
-export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: Function }): JSX.Element {
+export function Header({setOpen, setTastefulData}: { setOpen: Function, setTastefulData: Function }): JSX.Element {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
 
     useEffect(() => {
         async function init() {
-            if (active && connector) {
+            if (active && connector && account) {
                 const web3Provider = new providers.Web3Provider(await connector.getProvider());
                 const contractHelper = ContractHelper.init(web3Provider);
                 const tenderIds = await contractHelper.fetchAllNftIds();
-                setTenders({
+                setTastefulData({
                     tenders: await contractHelper.fetchAllTenders(tenderIds),
-                    nftsData: await contractHelper.fetchAllNftData(tenderIds)
+                    nftsData: await contractHelper.fetchAllNftData(tenderIds),
+                    setTastefulData: setTastefulData
                 });
             }
         }
 
         init();
-    }, [active]);
+    }, [active, account, chainId]);
 
     return (
         <nav className="flex items-center justify-between flex-wrap w-full px-32 py-5 font-all">
@@ -48,7 +49,7 @@ export function Header({setOpen, setTenders}: { setOpen: Function, setTenders: F
             </div>
             <div className="flex flex-shrink-0">
                 <NavBar setOpen={setOpen}/>
-                <Dropdown/>
+                <Dropdown active={active} account={account}/>
             </div>
         </nav>
     );
@@ -79,28 +80,31 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
         </button>);
 }
 
-function Dropdown(): JSX.Element {
+function Dropdown({active, account}: { active: boolean, account: any }): JSX.Element {
 
     return (
         <div className="font-all">
             <Menu as="div" className="relative inline-block text-left">
-                <Menu.Button><img src={profile_icon} alt="profile_icon" className="h-xl pl-5 "/></Menu.Button> 
-                <Transition as={Fragment} enter="transition ease-out duration-100" enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100" leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100" leaveTo="transform opacity-0 scale-95">
-                    <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a href="/account" className={`${ active ? 'text-light' : 'text-light' } group flex rounded-md items-center w-full px-2 py-2 font-large`}>Account</a>
-                            )}
-                        </Menu.Item>
-                        <Menu.Item>
-                        {({ active }) => (
-                                <a href="/account" className={`${ active ? 'text-light' : 'text-light' } group flex rounded-md items-center w-full px-2 py-2 font-large text-light`}>Claim</a>
-                            )}
-                        </Menu.Item>
-                    </Menu.Items>
-                </Transition>
+                <Menu.Button><img src={profile_icon} alt="profile_icon" className="h-xl pl-5 "/></Menu.Button>
+                {active ?
+                    <Transition as={Fragment} enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95">
+                        <Menu.Items
+                            className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Menu.Item>
+                                <Link to={"/account/"+account}
+                                      className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large'}>Account</Link>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <Link to={"/claim"}
+                                      className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large text-light'}>Claim</Link>
+                            </Menu.Item>
+                        </Menu.Items>
+                    </Transition> : <></>}
             </Menu>
         </div>
     );
-    
+
 }
