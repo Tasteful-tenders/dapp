@@ -12,6 +12,7 @@ import {
     Link
 } from "react-router-dom";
 import {Account} from "./components/Account";
+import {Mint} from "./components/Mint";
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -34,7 +35,7 @@ function App(): JSX.Element {
                                 <h1>bids</h1>
                             </Route>
                             <Route path={'/mint'}>
-                                <h1>mint</h1>
+                                <Mint/>
                             </Route>
                             <Route path={'/account/:address'}>
                                 <Account/>
