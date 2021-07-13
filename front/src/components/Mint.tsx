@@ -116,7 +116,7 @@ export function Mint(): JSX.Element {
                     const timestamp = new Date(e.target.value).getTime();
                     setTender({...tender, endDate: BigNumber.from(!isNaN(timestamp) ? timestamp / 1000 : 0)});
                 }}/>
-                <button className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium"}
+                <button className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block"}
                         onClick={e => {
                             async function mint() {
                                 if (contractHelper === undefined) {
@@ -126,6 +126,34 @@ export function Mint(): JSX.Element {
                             }
                             mint();
                         }}>Mint
+                </button>
+                <svg xmlns="http://www.w3.org/2000/svg" className={"w-profile inline-block opacity-20 -mt-2"} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+                <button disabled={true} className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block opacity-20"}
+                        onClick={e => {
+                            async function approve() {
+                                if (contractHelper === undefined) {
+                                    return;
+                                }
+                                await contractHelper.nftFactory.approve(contractHelper.auction.address, 1);
+                            }
+                            approve();
+                        }}>Approve
+                </button>
+                <svg xmlns="http://www.w3.org/2000/svg" className={"w-profile inline-block opacity-20 -mt-2"} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+                <button disabled={true} className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block opacity-20"}
+                        onClick={e => {
+                            async function add() {
+                                if (contractHelper === undefined) {
+                                    return;
+                                }
+                                await contractHelper.auction.addNFT(1,  1, 0);
+                            }
+                            add();
+                        }}>Create tender
                 </button>
             </div>
         </div>
