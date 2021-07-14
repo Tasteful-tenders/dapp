@@ -5,13 +5,13 @@ import {ContractHelper, INFTData, ITender} from "../contractHelper";
 import {BigNumber} from "ethers";
 import {TenderCard} from "./TenderCard";
 import {s3} from "../constants";
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 
 export function Mint(): JSX.Element {
     const web3Context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = web3Context;
     const contractHelper = ContractHelper.getInstance();
-
+    const history = useHistory();
     const { id } : {id: string} = useParams();
     const [approvedAddress, setApprovedAddress] = useState('0x0000000000000000000000000000000000000000');
 
@@ -36,8 +36,15 @@ export function Mint(): JSX.Element {
             const nftId = BigNumber.from(id);
             if (contractHelper === undefined) return;
             if (nftId.toNumber() === 0) return;
-            setNftData(await contractHelper.getNftData(nftId));
-            setApprovedAddress(await contractHelper.nftFactory.getApproved(nftId));
+            const nft = await contractHelper.getNftData(nftId)
+            setNftData(nft);
+            const approved = await contractHelper.nftFactory.getApproved(nftId)
+            setApprovedAddress(approved);
+            const tender: ITender = await contractHelper.auction.tenders(nftId);
+            setTender(tender);
+            if (tender.active) {
+                history.push('/error');
+            }
         }
         fetch();
     }, [id, contractHelper]);
@@ -148,7 +155,7 @@ export function Mint(): JSX.Element {
                 </label>
                 <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    type="date" onChange={e => {
+                    type="datetime-local" onChange={e => {
                     const timestamp = new Date(e.target.value).getTime();
                     setTender({...tender, endDate: BigNumber.from(!isNaN(timestamp) ? timestamp / 1000 : 0)});
                 }}/>
@@ -198,9 +205,14 @@ export function Mint(): JSX.Element {
                                 if (contractHelper === undefined) {
                                     return;
                                 }
-                                await contractHelper.auction.addNFT(1,  1, 0);
+                                await contractHelper.auction.addNFT(nftData.id,  tender.startPrice, tender.endDate);
                             }
-                            add();
+                            if (tender.startPrice.toNumber() > 0 && tender.endDate.toNumber() > (new Date().getTime() / 1000) + (3600 * 24) - 1) {
+                                add();
+                            }
+                            else {
+                                alert('Plz enter valid start price and end date');
+                            }
                         }}>Create tender
                 </button>
                 :
