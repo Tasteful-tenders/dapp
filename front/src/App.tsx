@@ -34,7 +34,7 @@ function App(): JSX.Element {
                             <Route path={'/bids'}>
                                 <h1>bids</h1>
                             </Route>
-                            <Route path={'/mint'}>
+                            <Route path={'/mint/:id'}>
                                 <Mint/>
                             </Route>
                             <Route path={'/account/:address'}>

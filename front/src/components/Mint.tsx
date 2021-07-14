@@ -1,15 +1,20 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useWeb3React} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
 import {ContractHelper, INFTData, ITender} from "../contractHelper";
 import {BigNumber} from "ethers";
 import {TenderCard} from "./TenderCard";
 import {s3} from "../constants";
+import {useParams} from "react-router-dom";
 
 export function Mint(): JSX.Element {
     const web3Context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = web3Context;
     const contractHelper = ContractHelper.getInstance();
+
+    const { id } : {id: string} = useParams();
+    const [approvedAddress, setApprovedAddress] = useState('0x0000000000000000000000000000000000000000');
+
     const [nftData, setNftData]: [nftData: INFTData, setNftData: Function] = useState({
         id: BigNumber.from(0),
         title: '',
@@ -25,6 +30,17 @@ export function Mint(): JSX.Element {
         owner: "",
         startPrice: BigNumber.from(0)
     });
+
+    useEffect(() => {
+        async function fetch() {
+            const nftId = BigNumber.from(id);
+            if (contractHelper === undefined) return;
+            if (nftId.toNumber() === 0) return;
+            setNftData(await contractHelper.getNftData(nftId));
+            setApprovedAddress(await contractHelper.nftFactory.getApproved(nftId));
+        }
+        fetch();
+    }, [id, contractHelper]);
 
     async function addFile(files: FileList|null) {
         if (files === null) {
@@ -67,22 +83,33 @@ export function Mint(): JSX.Element {
                 <label className="text-small font-bold mb-2">
                     Title
                 </label>
+                {nftData.id.toNumber() === 0 &&
                 <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="text" onChange={e => {
                     setNftData({...nftData, title: e.target.value});
-                }} placeholder="Title"/>
+                }} placeholder="Title"/>}
+                {nftData.id.toNumber() !== 0 &&
+                <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    type="text" disabled={true} value={nftData.title}/>}
                 <label className="text-small font-bold mb-2">
                     Author
                 </label>
+                {nftData.id.toNumber() === 0 &&
                 <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="text" onChange={e => {
                     setNftData({...nftData, author: e.target.value});
-                }} placeholder="Author"/>
+                }} placeholder="Author"/>}
+                {nftData.id.toNumber() !== 0 &&
+                <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    type="text" disabled={true} value={nftData.author}/>}
                 <label className="text-small font-bold mb-2">
                     Image
                 </label>
+                {nftData.id.toNumber() === 0 &&
                 <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="file" onChange={e => {
@@ -90,15 +117,24 @@ export function Mint(): JSX.Element {
                             await addFile(e.target.files);
                         }
                         upload();
-                }}/>
+                }}/>}
+                {nftData.id.toNumber() !== 0 &&
+                <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    type="text" disabled={true} value={'IPFS hash : '+nftData.ipfsHash}/>}
                 <label className="text-small font-bold mb-2">
                     Description
                 </label>
+                {nftData.id.toNumber() === 0 &&
                 <textarea
                     className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
                     rows={4} onChange={e => {
                     setNftData({...nftData, description: e.target.value});
-                }}/>
+                }}/>}
+                {nftData.id.toNumber() !== 0 &&
+                <textarea
+                    className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                    rows={4} disabled={true} value={nftData.description}/>}
                 <label className="text-small font-bold mb-2">
                     Start price
                 </label>
@@ -116,6 +152,7 @@ export function Mint(): JSX.Element {
                     const timestamp = new Date(e.target.value).getTime();
                     setTender({...tender, endDate: BigNumber.from(!isNaN(timestamp) ? timestamp / 1000 : 0)});
                 }}/>
+                {nftData.id.toNumber() === 0 &&
                 <button className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block"}
                         onClick={e => {
                             async function mint() {
@@ -126,25 +163,36 @@ export function Mint(): JSX.Element {
                             }
                             mint();
                         }}>Mint
-                </button>
+                </button>}
+                {nftData.id.toNumber() !== 0 &&
+                <button className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block opacity-20"}
+                        disabled={true}>Mint
+                </button>}
                 <svg xmlns="http://www.w3.org/2000/svg" className={"w-profile inline-block opacity-20 -mt-2"} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-                <button disabled={true} className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block opacity-20"}
+                {nftData.id.toNumber() !== 0 && contractHelper && approvedAddress !== contractHelper.auction.address ?
+                <button className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block"}
                         onClick={e => {
                             async function approve() {
                                 if (contractHelper === undefined) {
                                     return;
                                 }
-                                await contractHelper.nftFactory.approve(contractHelper.auction.address, 1);
+                                await contractHelper.nftFactory.approve(contractHelper.auction.address, nftData.id);
+                                setApprovedAddress(await contractHelper.nftFactory.getApproved(nftData.id));
                             }
                             approve();
                         }}>Approve
                 </button>
+                :
+                <button disabled={true} className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block opacity-20"}>
+                    Approve
+                </button>}
                 <svg xmlns="http://www.w3.org/2000/svg" className={"w-profile inline-block opacity-20 -mt-2"} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-                <button disabled={true} className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block opacity-20"}
+                {nftData.id.toNumber() !== 0 && contractHelper && approvedAddress === contractHelper.auction.address ?
+                <button className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block"}
                         onClick={e => {
                             async function add() {
                                 if (contractHelper === undefined) {
@@ -155,6 +203,10 @@ export function Mint(): JSX.Element {
                             add();
                         }}>Create tender
                 </button>
+                :
+                <button disabled={true} className={"mt-6 bg-black text-white px-9 border-rounded font-medium text-medium inline-block opacity-20"}>
+                    Create tender
+                </button>}
             </div>
         </div>
     );
