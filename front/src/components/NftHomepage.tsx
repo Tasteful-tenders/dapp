@@ -13,7 +13,7 @@ export function NftHomepage(): JSX.Element  {
     const { id } : {id: string} = useParams();
 
     var [nft, setNft] = useState({
-        id: 0,
+        id: BigNumber.from(0),
         title: '',
         author: '',
         description: '',
@@ -37,7 +37,7 @@ export function NftHomepage(): JSX.Element  {
                 if(contractHelper == undefined) 
                     return( <div></div> );
 
-                    setNft(await contractHelper.getNftData(BigNumber.from({ id }.id)));
+                    setNft(await contractHelper.getNftData(BigNumber.from(id)));
 
                     setTender(await contractHelper.auction.tenders({ id }.id));
             }
