@@ -17,7 +17,8 @@ module.exports = {
       bid_card: '70px',
       bottom_card: '90px',
       image_card: '250px',
-      logo: '25px'
+      logo: '25px',
+      "85": '21rem',
     },
     maxHeight: {
       image_card: '250px'
