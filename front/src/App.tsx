@@ -3,7 +3,7 @@ import {Header, Footer} from './components';
 import {Web3ReactProvider} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
 import {NftAuction, NftHomepage, ConnectModal} from "./components";
-import {TastefulDataProvider} from "./context";
+import {defaultTastefulData, TastefulDataProvider} from "./context";
 import Home from "./components/Home";
 import {
     BrowserRouter as Router,
@@ -11,6 +11,7 @@ import {
     Route,
     Link
 } from "react-router-dom";
+import {Account} from "./components/Account";
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -20,14 +21,14 @@ function getLibrary(provider: any) {
 
 function App(): JSX.Element {
     const [open, setOpen]: [open: boolean, setOpen: Function] = useState(false);
-    const [tastefulData, setTastefulData]: [tastefulData: any, setTastefulData: Function] = useState({});
+    const [tastefulData, setTastefulData]: [tastefulData: any, setTastefulData: Function] = useState(defaultTastefulData);
 
     return (
         <Router>
             <Web3ReactProvider getLibrary={getLibrary}>
                 <TastefulDataProvider value={tastefulData}>
                     <div className="App">
-                        <Header setOpen={setOpen} setTenders={setTastefulData}/>
+                        <Header setOpen={setOpen} setTastefulData={setTastefulData}/>
                         <Switch>
                             <Route path={'/bids'}>
                                 <h1>bids</h1>
@@ -37,6 +38,12 @@ function App(): JSX.Element {
                             </Route>
                             <Route path={'/NftHomepage/:id'}>
                                 <NftHomepage/>
+                            </Route>
+                            <Route path={'/account/:address'}>
+                                <Account/>
+                            </Route>
+                            <Route path={'/claim'}>
+                                <h1>claim</h1>
                             </Route>
                             <Route path={'/NftAuction/:id'}>
                                 <NftAuction/>
