@@ -26,7 +26,7 @@ export class ContractHelper {
 
     private static instance?: ContractHelper;
 
-    public static getInstance(): ContractHelper|undefined {
+    public static getInstance(): ContractHelper | undefined {
         return ContractHelper.instance;
     }
 
@@ -87,24 +87,32 @@ export class ContractHelper {
     public async getNftData(nftId: BigNumber): Promise<INFTData> {
         const tokenURI: string = await this.nftFactory.tokenURI(nftId);
         try {
-            JSON.parse(tokenURI.slice(1, tokenURI.length-1));
+            JSON.parse(tokenURI);
         } catch (e) {
-            console.log('impossible to parse nft n°'+nftId.toNumber()+' returning empty object');
+            try {
+                JSON.parse(tokenURI.slice(1, tokenURI.length - 1));
+            } catch (e) {
+                console.log('impossible to parse nft n°' + nftId.toNumber() + ' returning empty object');
+                return {
+                    id: nftId,
+                    title: '',
+                    author: '',
+                    description: '',
+                    ipfsHash: ''
+                };
+            }
             return {
-                id: nftId,
-                title: '',
-                author: '',
-                description: '',
-                ipfsHash: ''
+                ...JSON.parse(tokenURI.slice(1, tokenURI.length - 1)),
+                id: nftId
             };
         }
         return {
-            id: nftId,
-            ...JSON.parse(tokenURI.slice(1, tokenURI.length-1))
+            ...JSON.parse(tokenURI),
+            id: nftId
         };
     }
 
-    public async fetchOwnedNftIds(address :string): Promise<BigNumber[]> {
+    public async fetchOwnedNftIds(address: string): Promise<BigNumber[]> {
         const balanceOf = await this.nftFactory.balanceOf(address);
         if (balanceOf === BigNumber.from(0)) {
             return [];
@@ -120,7 +128,7 @@ export class ContractHelper {
         return ownedNfts;
     }
 
-    public async fetchCreatedNftIds(address :string): Promise<BigNumber[]> {
+    public async fetchCreatedNftIds(address: string): Promise<BigNumber[]> {
         const created: any[] = await this.nftFactory.queryFilter(this.nftFactory.filters.Transfer('0x0000000000000000000000000000000000000000', address));
         return created.map((log) => {
             return log.args.tokenId;

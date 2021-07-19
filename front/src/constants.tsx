@@ -872,3 +872,13 @@ export const AUCTION_ABI = [
     }
 ];
 
+const AWS = require('aws-sdk');
+
+export const s3 = new AWS.S3({
+    apiVersion: '2006-03-01',
+    accessKeyId: '9cDM4HrHnD8cZUWf+6x7NQ==',
+    secretAccessKey: 'dMtK2Fw7xs0hUXRWq+pvKkpp1rYDWyozTlWR2TEd2JI=',
+    endpoint: 'https://storageapi.fleek.co',
+    region: 'us-east-1',
+    s3ForcePathStyle: true
+});

@@ -66,7 +66,7 @@ function NavBar({setOpen}: { setOpen: Function }): JSX.Element {
                 <Link className={'px-9 font-black text-title flex items-center'} to={'/bids'}>
                     BIDS
                 </Link>
-                <Link className={'px-9 font-black text-title flex items-center'} to={'/mint'}>
+                <Link className={'px-9 font-black text-title flex items-center'} to={'/mint/0'}>
                     MINT
                 </Link>
             </>
