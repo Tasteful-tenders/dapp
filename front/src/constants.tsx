@@ -641,236 +641,248 @@ export const TTK_ABI = [
     }
 ];
 export const AUCTION_ABI = [
-    {
-        "inputs": [
             {
-                "internalType": "contract IERC721",
-                "name": "_NftFactory",
-                "type": "address"
+                "inputs": [
+                    {
+                        "internalType": "contract IERC721",
+                        "name": "_NftFactory",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IERC20",
+                        "name": "_tendersToken",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
             },
             {
-                "internalType": "contract IERC20",
-                "name": "_tendersToken",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_nftId",
-                "type": "uint256"
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "_nftId",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "_startprice",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "_enddate",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "logAddNFT",
+                "type": "event"
             },
             {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_startprice",
-                "type": "uint256"
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "_nftId",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "_bidder",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "_bid",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "_timestamp",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "logBid",
+                "type": "event"
             },
             {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_enddate",
-                "type": "uint256"
-            }
-        ],
-        "name": "logAddNFT",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_nftId",
-                "type": "uint256"
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_nftId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "_startPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "_endDate",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "addNFT",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
             },
             {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_bid",
-                "type": "uint256"
-            }
-        ],
-        "name": "logBid",
-        "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_nftId",
-                "type": "uint256"
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_nftId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "_bid",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "bid",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
             },
             {
-                "internalType": "uint256",
-                "name": "_startPrice",
-                "type": "uint256"
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_nftId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "cancel",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
             },
             {
-                "internalType": "uint256",
-                "name": "_endDate",
-                "type": "uint256"
-            }
-        ],
-        "name": "addNFT",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_nftId",
-                "type": "uint256"
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_nftId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "claim",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
             },
             {
-                "internalType": "uint256",
-                "name": "_bid",
-                "type": "uint256"
-            }
-        ],
-        "name": "bid",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_nftId",
-                "type": "uint256"
-            }
-        ],
-        "name": "cancel",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_nftId",
-                "type": "uint256"
-            }
-        ],
-        "name": "claim",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "nftFactory",
-        "outputs": [
-            {
-                "internalType": "contract IERC721",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "nftIds",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_nftId",
-                "type": "uint256"
-            }
-        ],
-        "name": "refund",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "tenders",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "owner",
-                "type": "address"
+                "inputs": [],
+                "name": "nftFactory",
+                "outputs": [
+                    {
+                        "internalType": "contract IERC721",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
             },
             {
-                "internalType": "uint256",
-                "name": "startPrice",
-                "type": "uint256"
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "nftIds",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
             },
             {
-                "internalType": "uint256",
-                "name": "endDate",
-                "type": "uint256"
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_nftId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "refund",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
             },
             {
-                "internalType": "address",
-                "name": "highestBidder",
-                "type": "address"
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "tenders",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "startPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "endDate",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "highestBidder",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "highestBid",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "active",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
             },
             {
-                "internalType": "uint256",
-                "name": "highestBid",
-                "type": "uint256"
-            },
-            {
-                "internalType": "bool",
-                "name": "active",
-                "type": "bool"
+                "inputs": [],
+                "name": "tendersToken",
+                "outputs": [
+                    {
+                        "internalType": "contract IERC20",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
             }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "tendersToken",
-        "outputs": [
-            {
-                "internalType": "contract IERC20",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    }
-];
+        ];
 
 const AWS = require('aws-sdk');
 
