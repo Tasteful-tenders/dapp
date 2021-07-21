@@ -1,7 +1,7 @@
 import {Transition} from '@headlessui/react';
 import Spinner from 'react-spinner-material';
 
-export function TxSentModal({txPending}: { txPending: string }) {
+export function TxPendingModal({txPending}: { txPending: string }) {
 
     return (
         <Transition
