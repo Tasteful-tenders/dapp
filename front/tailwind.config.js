@@ -34,7 +34,8 @@ module.exports = {
       big_nft: '515px',
       nft_card: '250px',
       bid_card: '490px',
-      profile_pic: '250px'
+      profile_pic: '250px',
+      confirmation_modal: '300px'
     },
     fontSize: {
       xs: '10px',
