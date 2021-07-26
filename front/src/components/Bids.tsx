@@ -25,6 +25,8 @@ export function Bids(): JSX.Element {
             const bids: any[] = await contractHelper.fetchAllUserBids(account);
             const nftIds: BigNumber[] = bids.map((log) => {
                 return log.args._nftId;
+            }).sort().filter(function(item, pos, ary) {
+                return !pos || item.toNumber() != ary[pos - 1].toNumber();
             });
             const activeBids: ITender[] = await contractHelper.fetchAllUserActiveBids(account, nftIds);
             const data: INFTData[] = await contractHelper.fetchAllNftData(nftIds);
@@ -79,12 +81,12 @@ export function Bids(): JSX.Element {
                                 <div>
                                     <div className={"shadow-xl h-image_card text-center grid gap-4 p-4"}>
                                         {allBids.map((log, index) => {
-                                            const bidDate = new Date(log.args._timestamp.toNumber());
+                                            const bidDate = new Date(log.args._timestamp.toNumber()*1000);
                                             return (
                                                 <div key={index} className="bg-white h-bid_card rounded-xl grid grid-cols-5 gap-4 content-center text-black shadow-md">
                                                     <div className="col-start-1 col-end-4 pl-6">
                                                         <div><span className="font-bold text-medium">Bid placed by </span>{'0x..'+log.args._bidder.slice(39)}</div>
-                                                        <div className="text-small">{bidDate.toDateString()}</div>
+                                                        <div className="text-small">{bidDate.toDateString()} at {bidDate.getHours()+'H'+bidDate.getMinutes()}</div>
                                                     </div>
                                                     <div className="col-span-2 grid justify-items-end content-center text-medium font-bold pr-6">{log.args._bid.toNumber()} TTK</div>
                                                 </div>
