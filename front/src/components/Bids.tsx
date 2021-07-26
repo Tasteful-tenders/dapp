@@ -55,37 +55,44 @@ export function Bids(): JSX.Element {
                             <TenderCard nftData={nftData} tender={tender}/>
                         </div>
                         <div className={"col-span-3"}>
-                            <div className={"bg-white w-full h-top_card border-top-nft-card shadow-xl top-0"}>
+                            <div className={"bg-white w-full h-top_card border-top-nft-card shadow-xl p-6"}>
                                 <h3 className={"text-medium inline-block pr-2"}>{nftData.title}</h3>
                                 <p className={"text-small inline-block"}>By {nftData.author}</p>
                             </div>
                             <div className={"grid grid-cols-3"}>
                                 <div>
-                                    <div className={"text-center text-big shadow-xl h-image_card"}>
+                                    <div className={"text-center text-big shadow-xl h-image_card pt-24"}>
                                         {tender.highestBid.toNumber()} TTK
                                     </div>
-                                    <div className={"bg-black text-white grid grid-cols-2 h-bottom_card font-black rounded-bl-lg shadow-xl bottom-0 w-full"}>
+                                    <div className={"text-center text-large bg-black text-white h-bottom_card font-black rounded-bl-lg shadow-xl p-6"}>
                                         Highest Bid
                                     </div>
                                 </div>
                                 <div>
-                                    <div className={"text-center text-big shadow-xl h-image_card"}>
+                                    <div className={"text-center text-big shadow-xl h-image_card pt-24"}>
                                         {userBids[0].args._bid.toNumber()} TTK
                                     </div>
-                                    <div className={"bg-black text-white grid grid-cols-2 h-bottom_card font-black shadow-xl bottom-0 w-full"}>
+                                    <div className={"text-center text-large bg-black text-white h-bottom_card font-black shadow-xl pt-6"}>
                                         Your current Bid
                                     </div>
                                 </div>
                                 <div>
-                                    <div className={"shadow-xl h-image_card"}>
+                                    <div className={"shadow-xl h-image_card text-center grid gap-4 p-4"}>
                                         {allBids.map((log, index) => {
+                                            const bidDate = new Date(log.args._timestamp.toNumber());
                                             return (
-                                                <p key={index}>{log.args._bid.toNumber()}</p>
+                                                <div key={index} className="bg-white h-bid_card rounded-xl grid grid-cols-5 gap-4 content-center text-black shadow-md">
+                                                    <div className="col-start-1 col-end-4 pl-6">
+                                                        <div><span className="font-bold text-medium">Bid placed by </span>{'0x..'+log.args._bidder.slice(39)}</div>
+                                                        <div className="text-small">{bidDate.toDateString()}</div>
+                                                    </div>
+                                                    <div className="col-span-2 grid justify-items-end content-center text-medium font-bold pr-6">{log.args._bid.toNumber()} TTK</div>
+                                                </div>
                                             );
                                         })}
                                     </div>
-                                    <div className={"bg-black text-white grid grid-cols-2 h-bottom_card font-black rounded-br-lg shadow-xl bottom-0 w-full"}>
-                                        Bids
+                                    <div className={"text-center text-large bg-black text-white h-bottom_card font-black rounded-br-lg shadow-xl pt-6"}>
+                                        Recent bids
                                     </div>
                                 </div>
                             </div>
