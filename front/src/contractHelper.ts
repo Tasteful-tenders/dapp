@@ -64,8 +64,8 @@ export class ContractHelper {
         });
     }
 
-    public async fetchAllTenders(tenderIds: any[]): Promise<ITender[]> {
-        return await Promise.all(tenderIds.map(async (id) => {
+    public async fetchAllTenders(nftIds: any[]): Promise<ITender[]> {
+        return await Promise.all(nftIds.map(async (id) => {
             const tender = await this.auction.tenders(id);
             return {
                 owner: tender.owner,
@@ -78,8 +78,8 @@ export class ContractHelper {
         }));
     }
 
-    public async fetchAllNftData(tenderIds: any[]): Promise<INFTData[]> {
-        return await Promise.all(tenderIds.map(async (id) => {
+    public async fetchAllNftData(nftIds: any[]): Promise<INFTData[]> {
+        return await Promise.all(nftIds.map(async (id) => {
             return await this.getNftData(id);
         }));
     }
@@ -132,6 +132,17 @@ export class ContractHelper {
         const created: any[] = await this.nftFactory.queryFilter(this.nftFactory.filters.Transfer('0x0000000000000000000000000000000000000000', address));
         return created.map((log) => {
             return log.args.tokenId;
+        });
+    }
+
+    public async fetchAllUserBids(address: string): Promise<any[]> {
+        return await this.auction.queryFilter(this.auction.filters.logBid(null, address));
+    }
+
+    public async fetchAllUserActiveBids(address: string, nftIds: BigNumber[]): Promise<ITender[]> {
+        const tenders: ITender[] = await this.fetchAllTenders(nftIds);
+        return tenders.filter((tender) => {
+            return tender.active;
         });
     }
 
