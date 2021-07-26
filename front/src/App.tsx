@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import {Account} from "./components/Account";
 import {Mint} from "./components/Mint";
+import {Bids} from "./components/Bids";
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -32,7 +33,7 @@ function App(): JSX.Element {
                         <Header setOpen={setOpen} setTastefulData={setTastefulData}/>
                         <Switch>
                             <Route path={'/bids'}>
-                                <h1>bids</h1>
+                                <Bids/>
                             </Route>
                             <Route path={'/mint/:id'}>
                                 <Mint/>
