@@ -62,24 +62,11 @@ export function NftAuction(): JSX.Element{
 
                 approve.wait().then(async () => {
                     let bid = await contractHelper.auction.bid(id, bidAmount);
-                    bid.wait().then(async (receipt: any) => {
-                        console.log(receipt)
-                    });
-                    /*let refund = await contractHelper.auction.refund(id);
-                    refund.then((tx: any) => {
-                        console.log(tx);
-                    });*/
                 });
-
-                //checker si la tx a bien été inclus dans un block sinon attendre
             }
-
-            //await contractHelper.auction.bid(id, bidAmount);
         }
     }
     
-    console.log(allBids)
-
     if(account === tender.highestBidder)
         higherBidder = true;
 
@@ -109,15 +96,16 @@ export function NftAuction(): JSX.Element{
 
                 <div className="row-span-3 text-white flex flex-col gap-4 overflow-y-scroll h-85 w-middle">
 
-                    {allBids?.slice(0).reverse().map((element: any)=>{    
-                        element = element.toNumber();
+                    {allBids?.slice(0).reverse().map((element: any, key: any)=>{  
+                        let timestamp = element.args._timestamp.toNumber();  
+                        let date = new Date(timestamp * 1000)
                         return (
                             <div className="w-bid_card bg-white h-bid_card border-button grid grid-cols-4 gap-4 flex content-center text-black shadow-md">
                                 <div className="col-start-1 col-end-3 pl-6">
-                                    <div><span className="font-bold text-medium">Bid placed by </span>@Teddy</div>
-                                    <div className="text-small">Jun 18, 2021 at 6:35am</div>
+                                    <div><span className="font-bold text-medium">Bid placed by </span><span className="text-card">{ element.args._bidder }</span></div>
+                                    <div className="text-small">{ date.getDate()+ "/"+(date.getMonth()+1)+ "/"+date.getFullYear()+ " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds() }</div>
                                 </div>
-                                <div className="col-end-5 col-span-2 grid justify-items-end flex content-center text-large font-bold pr-6">{element} TTK</div>
+                                <div className="col-end-5 col-span-2 grid justify-items-end flex content-center text-large font-bold pr-6">{ element.args._bid.toNumber() } TTK</div>
                             </div>
                         )
                     })}
