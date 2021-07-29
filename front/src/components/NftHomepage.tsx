@@ -44,11 +44,11 @@ export function NftHomepage(): JSX.Element  {
         }
         
         getNftData();
+
     }, [active]);
 
     return(
         <div className="grid grid-cols-3 px-32 font-all h-body py-8">
-            
             <div className="col-start-1 w-big_nft">
                 <img src={'https://ipfs.io/ipfs/' + nft.ipfsHash} alt="nft_example" className="shadow-xl border-nft-card"/>
             </div>
@@ -60,10 +60,11 @@ export function NftHomepage(): JSX.Element  {
                         <div className="text-medium font-light text-grey">by { nft.author }</div>
                     </div>
                     <div className="col-end-3 grid justify-items-end">
-                        <div className="text-big uppercase font-black">Not sold</div>
-                        <Link className={'text-large font-light text-green'} to={'/NftAuction/' + nft.id}>
-                            add new bid
-                        </Link>
+                        <div className="text-big uppercase font-black">{ tender.active ? 'Not sold' : 'Sold' }</div>
+                        { tender.active ? 
+                            <Link className={'text-large font-light text-green'} to={'/NftAuction/' + nft.id}>
+                                add new bid
+                            </Link> : <div className={'font-light text-green'}>Bought by : { tender.owner }</div> }
                     </div>
                 </div>
 
@@ -72,10 +73,16 @@ export function NftHomepage(): JSX.Element  {
                         <div className="text-big font-black">Description</div>
                         <div className="text-large font-light text-left">{ nft.description }</div>
                     </div>
-                    <div className="col-end-7 grid justify-items-end col-span-2">
-                        <div className="text-title uppercase font-medium">Started price</div>
-                        <div className="text-big font-black">{ BigNumber.from(tender.startPrice).toNumber() } TTK</div>
-                    </div>
+                    
+                    { tender.active ? 
+                        <div className="col-end-7 grid justify-items-end col-span-2">
+                            <div className="text-title uppercase font-medium">Started price</div>
+                            <div className="text-big font-black">{ BigNumber.from(tender.startPrice).toNumber() } TTK</div>
+                        </div> : 
+                        <div className="col-end-7 grid justify-items-end col-span-2">
+                            <div className="text-title uppercase font-medium">Sold for</div>
+                            <div className="text-big font-black">{ BigNumber.from(tender.highestBid).toNumber() } TTK</div>
+                        </div> }
                 </div>
 
             </div>

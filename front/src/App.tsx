@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Header, Footer} from './components';
 import {Web3ReactProvider} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
-import {NftAuction, NftHomepage, ConnectModal} from "./components";
+import {NftAuction, NftHomepage, ConnectModal, Claim} from "./components";
 import {defaultTastefulData, TastefulDataProvider} from "./context";
 import Home from "./components/Home";
 import {
@@ -44,8 +44,8 @@ function App(): JSX.Element {
                             <Route path={'/account/:address'}>
                                 <Account/>
                             </Route>
-                            <Route path={'/claim'}>
-                                <h1>claim</h1>
+                            <Route path={'/claim/:address'}>
+                                <Claim/>
                             </Route>
                             <Route path={'/NftAuction/:id'}>
                                 <NftAuction/>

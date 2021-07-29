@@ -98,7 +98,7 @@ function Dropdown({active, account}: { active: boolean, account: any }): JSX.Ele
                                       className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large'}>Account</Link>
                             </Menu.Item>
                             <Menu.Item>
-                                <Link to={"/claim"}
+                                <Link to={"/claim/"+account}
                                       className={'text-light group flex rounded-md items-center w-full px-2 py-2 font-large text-light'}>Claim</Link>
                             </Menu.Item>
                         </Menu.Items>
