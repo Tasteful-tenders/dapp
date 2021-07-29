@@ -9,6 +9,7 @@ import { Link, useParams } from 'react-router-dom';
 export function NftHomepage(): JSX.Element  {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
+    const contractHelper = ContractHelper.getInstance();
     
     const { id } : {id: string} = useParams();
 
@@ -31,7 +32,6 @@ export function NftHomepage(): JSX.Element  {
     
     useEffect(() => {   
         async function getNftData() {
-            const contractHelper = ContractHelper.getInstance();
 
             if (active) {
                 if(contractHelper == undefined) 
@@ -45,7 +45,7 @@ export function NftHomepage(): JSX.Element  {
         
         getNftData();
 
-    }, [active]);
+    }, [active, contractHelper]);
 
     return(
         <div className="grid grid-cols-3 px-32 font-all h-body py-8">
@@ -64,7 +64,7 @@ export function NftHomepage(): JSX.Element  {
                         { tender.active ? 
                             <Link className={'text-large font-light text-green'} to={'/NftAuction/' + nft.id}>
                                 add new bid
-                            </Link> : <div className={'font-light text-green'}>Bought by : { tender.owner }</div> }
+                            </Link> : <div className={'font-light text-green'}>Bought by : { tender.highestBidder }</div> }
                     </div>
                 </div>
 
