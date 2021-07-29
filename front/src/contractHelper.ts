@@ -58,8 +58,7 @@ export class ContractHelper {
     }
 
     public async fetchAllBids(nftId: BigNumber): Promise<any[]> {
-        const events: any[] = await this.auction.queryFilter(this.auction.filters.logBid(nftId));
-        return events;
+        return await this.auction.queryFilter(this.auction.filters.logBid(nftId));
     }
 
     //find all bids event with a given address
@@ -143,17 +142,6 @@ export class ContractHelper {
         const created: any[] = await this.nftFactory.queryFilter(this.nftFactory.filters.Transfer('0x0000000000000000000000000000000000000000', address));
         return created.map((log) => {
             return log.args.tokenId;
-        });
-    }
-
-    public async fetchAllUserBids(address: string): Promise<any[]> {
-        return await this.auction.queryFilter(this.auction.filters.logBid(null, address));
-    }
-
-    public async fetchAllUserActiveBids(address: string, nftIds: BigNumber[]): Promise<ITender[]> {
-        const tenders: ITender[] = await this.fetchAllTenders(nftIds);
-        return tenders.filter((tender) => {
-            return tender.active;
         });
     }
 
