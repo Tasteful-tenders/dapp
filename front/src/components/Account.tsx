@@ -37,8 +37,16 @@ export function Account(): JSX.Element {
             if (contractHelper === undefined) return;
             let owned, created: any = [];
             try {
-                owned = await contractHelper.fetchAllNftData(await contractHelper.fetchOwnedNftIds(address));
-                created = await contractHelper.fetchAllNftData(await contractHelper.fetchCreatedNftIds(address));
+                owned = await contractHelper.fetchOwnedNftIds(address);
+                owned = owned.sort().filter(function (item, pos, ary) {
+                    return !pos || item.toNumber() != ary[pos - 1].toNumber();
+                });
+                owned = await contractHelper.fetchAllNftData(owned);
+                created = await contractHelper.fetchCreatedNftIds(address);
+                created = created.sort().filter(function (item: any, pos: any, ary: any) {
+                    return !pos || item.toNumber() != ary[pos - 1].toNumber();
+                });
+                created = await contractHelper.fetchAllNftData(created);
             }
             catch (e) {
                 console.log('Invalid address in url !');
