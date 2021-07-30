@@ -243,7 +243,7 @@ export function Mint(): JSX.Element {
                                     }
                                 }
 
-                                if (tender.startPrice.toNumber() > 0 && tender.endDate.toNumber() > (new Date().getTime() / 1000) + (3600 * 24) - 1) {
+                                if (tender.startPrice.toNumber() > 0 && tender.endDate.toNumber() > (new Date().getTime() / 1000) + (60) - 1) {
                                     add();
                                 } else {
                                     alert('Plz enter valid start price and end date');

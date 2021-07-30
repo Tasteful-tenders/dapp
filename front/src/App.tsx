@@ -55,7 +55,7 @@ function App(): JSX.Element {
                             </Route>
                         </Switch>
                         <ConnectModal open={open} setOpen={setOpen}/>
-                        <Footer/>
+                        {/*<Footer/>*/}
                     </div>
                 </TastefulDataProvider>
             </Web3ReactProvider>
