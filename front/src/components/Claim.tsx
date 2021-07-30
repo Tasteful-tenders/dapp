@@ -29,9 +29,7 @@ export function Claim(): JSX.Element {
                 const claimableNftIds = nftIds.filter((id, index) => {
                     return nftTenders[index].active && nftTenders[index].highestBidder === account && nftTenders[index].endDate.toNumber() * 1000 < new Date().getTime();
                 });
-                const claimableNftsData = await Promise.all(claimableNftIds.map(async (id) => {
-                    return await contractHelper.getNftData(id);
-                }));
+                const claimableNftsData = await contractHelper.fetchAllNftData(claimableNftIds);
                 setAllNfts(claimableNftsData);
             }
         }
