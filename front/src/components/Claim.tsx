@@ -1,14 +1,16 @@
 import React, {Component, useEffect, useRef, useState} from 'react';
-import {BigNumber} from "ethers";
+import {BigNumber, providers} from "ethers";
 import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
 import {ContractHelper, INFTData, ITender} from "../contractHelper";
 import {Link, useParams} from 'react-router-dom';
+import {TxPendingModal} from "./TxPendingModal";
 
 export function Claim(): JSX.Element {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
     const contractHelper = ContractHelper.getInstance();
+    const [txPending, setTxPending] = useState('');
 
     const [allNfts, setAllNfts]: any[] = useState([]);
     const {address}: { address: string } = useParams();
@@ -35,22 +37,27 @@ export function Claim(): JSX.Element {
         }
 
         getNftData();
-    }, [active, contractHelper]);
+    }, [active, contractHelper, txPending]);
 
     const claimBid = async (NftId: BigNumber) => {
         const contractHelper = ContractHelper.getInstance();
 
         if (active) {
-            if (contractHelper == undefined)
+            if (contractHelper === undefined || !connector)
                 return (<div></div>);
 
             let claim = await contractHelper.auction.claim(NftId.toNumber());
+            setTxPending(claim.hash);
+            const web3Provider = new providers.Web3Provider(await connector.getProvider());
+            const mined = await web3Provider.waitForTransaction(claim.hash, 3);
+            setTxPending('');
 
         }
     }
 
     return (
         <div>
+            <TxPendingModal txPending={txPending}/>
             <div className={"text-black font-black uppercase text-big grid justify-items-center"}>Claim your nfts</div>
             <div className={"grid grid-cols-5 gap-4 p-4"}>
                 {allNfts.map((nft: any, index: number) => {
