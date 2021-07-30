@@ -29,7 +29,7 @@ function App(): JSX.Element {
         <Router>
             <Web3ReactProvider getLibrary={getLibrary}>
                 <TastefulDataProvider value={tastefulData}>
-                    <div className="App">
+                    <div className="App font-all">
                         <Header setOpen={setOpen} setTastefulData={setTastefulData}/>
                         <Switch>
                             <Route path={'/bids'}>
