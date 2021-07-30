@@ -6,6 +6,7 @@
 The goal of this project is to create a decentralized auction site.
 
 The project includes the creation of a dApp which will be divided into :
+
 - A smart contract backend in solidity on the testnet
 - A frontend part in react served via nodejs
 
@@ -27,6 +28,7 @@ We decided to store all NFTs on IPFS and deploy our website with fleek
 Front:
 
 - React
+- Tailwind
 
 Back:
 
