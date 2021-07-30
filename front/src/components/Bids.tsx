@@ -33,12 +33,16 @@ export function Bids(): JSX.Element {
             }).sort().filter(function (item, pos, ary) {
                 return !pos || item.toNumber() != ary[pos - 1].toNumber();
             });
-            const activeBids: ITender[] = await contractHelper.fetchAllUserActiveBids(account, nftIds);
-            const data: INFTData[] = await contractHelper.fetchAllNftData(nftIds);
-            const allBids: any[] = await contractHelper.auction.queryFilter(contractHelper.auction.filters.logBid(nftIds));
+            const allTenders = await contractHelper.fetchAllTenders(nftIds);
+            const activeNftIds = nftIds.filter((id, index) => {
+                return allTenders[index].endDate.toNumber() * 1000 > new Date().getTime();
+            });
+            const activeTender: ITender[] = await contractHelper.fetchAllTenders(activeNftIds);
+            const activeNftData: INFTData[] = await contractHelper.fetchAllNftData(activeNftIds);
+            const allBids: any[] = await contractHelper.auction.queryFilter(contractHelper.auction.filters.logBid(activeNftIds));
             setUserActiveBids({
-                tenders: activeBids,
-                nftsData: data,
+                tenders: activeTender,
+                nftsData: activeNftData,
                 allBids: allBids
             });
         }
